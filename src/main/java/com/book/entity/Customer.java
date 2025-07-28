@@ -19,7 +19,11 @@ public class Customer {
     @Column(name = "address")
     private String address;
 
-    // Add getters and setters
+    @Column(name = "telephone", nullable = false)
+    private String telephone;
+
+    // Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -50,5 +54,13 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 }

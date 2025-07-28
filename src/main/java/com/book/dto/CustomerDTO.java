@@ -1,23 +1,21 @@
 package com.book.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
 public class CustomerDTO {
-
-    @NotBlank(message = "Account number is required")
+    private Long id;
     private String accountNumber;
-
-    @NotBlank(message = "Name is required")
     private String name;
-
-    @NotBlank(message = "Address is required")
     private String address;
-
-    @Pattern(regexp = "^\\d{10}$", message = "Telephone number must be 10 digits")
     private String telephone;
 
     // Getters and Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getAccountNumber() {
         return accountNumber;

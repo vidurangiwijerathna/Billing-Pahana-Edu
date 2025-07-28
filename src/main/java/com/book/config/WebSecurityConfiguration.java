@@ -1,7 +1,5 @@
 package com.book.config;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfiguration {
 
-    private JWTAuthenticationFilter jwtAuthFilter;
-    private UserDetailsService userDetailsService;
+    private final JWTAuthenticationFilter jwtAuthFilter;
+    private final UserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
 
     @Autowired
@@ -34,7 +32,7 @@ public class WebSecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() throws Exception{
+    public AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -52,19 +50,14 @@ public class WebSecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()
-                )
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v2/**").permitAll()
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v2/signup").permitAll()
+                        .requestMatchers("/api/v2/signing").permitAll()
                         .requestMatchers("/api/v2/logout").permitAll()
-                        .requestMatchers("/api/v2/technician/**").permitAll()
-                        .requestMatchers("/api/v2/test/**").permitAll()
-                        .requestMatchers("/api/v2/tests/**").permitAll()
-                        .requestMatchers("/api/v2/appointment/**").permitAll()
-                        .requestMatchers("/api/v2/report/**").permitAll()
+                        .requestMatchers("/api/v2/customers/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -72,8 +65,7 @@ public class WebSecurityConfiguration {
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
-
 }
-

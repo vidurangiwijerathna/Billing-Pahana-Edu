@@ -1,12 +1,12 @@
 package com.book.service;
 
-import org.springframework.stereotype.Service;
+import com.book.dto.CustomerDTO;
+import java.util.List;
 
-@Service
-public class CustomerService {
-
-    public String getCustomerById(Long id) {
-        // Placeholder logic
-        return "Customer with ID: " + id;
-    }
+public interface CustomerService {
+    CustomerDTO saveCustomer(CustomerDTO customerDTO);
+    List<CustomerDTO> getAllCustomers();
+    CustomerDTO getCustomerById(Long id);
+    CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO);
+    void deleteCustomer(Long id);
 }

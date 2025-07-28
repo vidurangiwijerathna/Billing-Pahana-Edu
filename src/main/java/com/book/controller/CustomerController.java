@@ -1,29 +1,44 @@
 package com.book.controller;
 
-import org.springframework.web.bind.annotation.*;
+import com.book.dto.CustomerDTO;
 import com.book.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/api/v2/customers")
+@CrossOrigin("*")
 public class CustomerController {
 
-    private final CustomerService customerService;
+    @Autowired
+    private CustomerService customerService;
 
-    // Constructor Injection of CustomerService
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
+    @PostMapping(path = "/createCustomer")
+    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
+        return ResponseEntity.ok(customerService.saveCustomer(customerDTO));
     }
 
-    // Sample Endpoint to Get Customer by ID
+    @GetMapping(path = "/getallcustomer")
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+        return ResponseEntity.ok(customerService.getAllCustomers());
+    }
+
     @GetMapping("/{id}")
-    public String getCustomerById(@PathVariable Long id) {
-        // Example: You can return customerService.getCustomerById(id) instead
-        return "Customer ID: " + id;
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
+        return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 
-    // Sample Endpoint to test controller
-    @GetMapping("/hello")
-    public String helloCustomer() {
-        return "Hello from Customer Controller!";
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
+        return ResponseEntity.ok(customerService.updateCustomer(id, customerDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+        customerService.deleteCustomer(id);
+        return ResponseEntity.noContent().build();
     }
 }

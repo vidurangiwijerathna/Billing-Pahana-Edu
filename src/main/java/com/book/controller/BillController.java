@@ -16,7 +16,7 @@ public class BillController {
 
     private final BillService billService;
 
-    @PostMapping
+    @PostMapping(path = "/createBill")
     @PreAuthorize("hasRole('CASHIER')")
     public ResponseEntity<Bill> createBill(@RequestBody BillDTO dto) {
         return ResponseEntity.ok(billService.createBill(dto));
