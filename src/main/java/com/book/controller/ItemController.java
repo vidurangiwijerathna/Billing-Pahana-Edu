@@ -1,15 +1,15 @@
 package com.book.controller;
 
-
 import com.book.dto.ItemDTO;
 import com.book.entity.Items;
 import com.book.service.ItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-        import java.util.List;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
@@ -20,13 +20,14 @@ public class ItemController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Items> addItem(@RequestBody ItemDTO dto) {
+    public ResponseEntity<Items> addItem(@Valid @RequestBody ItemDTO dto) {
         return ResponseEntity.ok(itemService.addItem(dto));
     }
 
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Items> updateItem(@PathVariable Long id, @RequestBody ItemDTO dto) {
+    public ResponseEntity<Items> updateItem(@PathVariable Long id, @Valid @RequestBody ItemDTO dto) {
         return ResponseEntity.ok(itemService.updateItem(id, dto));
     }
 

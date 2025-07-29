@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
+@Table(name = "bills")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bill {
@@ -22,6 +24,6 @@ public class Bill {
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BillItem> items;
 }
