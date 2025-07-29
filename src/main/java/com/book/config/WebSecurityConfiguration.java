@@ -54,9 +54,14 @@ public class WebSecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/v2/**").permitAll()
                         .requestMatchers("/api/v2/signup").permitAll()
                         .requestMatchers("/api/v2/signing").permitAll()
                         .requestMatchers("/api/v2/logout").permitAll()
+                        .requestMatchers("/api/v2/categories/**").permitAll()
+                        .requestMatchers("/api/v2/bills/**").permitAll()
+                        .requestMatchers("//api/v2/bill-items/**").permitAll()
+                        .requestMatchers("//api/v2/items/**").permitAll()
                         .requestMatchers("/api/v2/customers/**").permitAll()
                         .anyRequest().authenticated()
                 )

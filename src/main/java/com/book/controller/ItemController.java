@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/items")
+@RequestMapping("/api/v2/items")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class ItemController {
 
     private final ItemService itemService;
 
-    @PostMapping
+    @PostMapping(path = "/itemcreate")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Items> addItem(@Valid @RequestBody ItemDTO dto) {
         return ResponseEntity.ok(itemService.addItem(dto));

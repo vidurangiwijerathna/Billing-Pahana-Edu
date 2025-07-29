@@ -31,12 +31,12 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/updateCustomer")
     public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
         return ResponseEntity.ok(customerService.updateCustomer(id, customerDTO));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteCustomer")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
         return ResponseEntity.noContent().build();

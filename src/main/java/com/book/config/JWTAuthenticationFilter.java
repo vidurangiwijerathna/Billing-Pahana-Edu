@@ -35,10 +35,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        // ✅ Bypass JWT filter for public endpoints
+
         if (path.startsWith("/api/v2/signup") ||
                 path.startsWith("/api/v2/signing") ||
                 path.startsWith("/api/v2/customers") ||
+                path.startsWith("/api/v2/categories/**")||
+                path.startsWith("/api/v2/bills/**")||
+                path.startsWith("/api/v2/items/**")||
+                path.startsWith("/api/v2/bill-items/**")||
                 path.startsWith("/api/v2/logout")) {
             filterChain.doFilter(request, response);
             return;

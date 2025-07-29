@@ -3,13 +3,14 @@ package com.book.controller;
 import com.book.dto.BillDTO;
 import com.book.entity.Bill;
 import com.book.service.BillService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/bills")
+@RequestMapping("/api/v2/bills")
 @RequiredArgsConstructor
 public class BillController {
 
@@ -17,7 +18,7 @@ public class BillController {
 
     @PostMapping(path = "/createBill")
     @PreAuthorize("hasRole('CASHIER')")
-    public ResponseEntity<Bill> createBill(@RequestBody BillDTO dto) {
+    public ResponseEntity<Bill> createBill(@Valid @RequestBody BillDTO dto) {
         return ResponseEntity.ok(billService.createBill(dto));
     }
 }
