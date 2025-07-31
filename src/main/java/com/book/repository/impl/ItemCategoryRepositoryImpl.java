@@ -17,8 +17,8 @@ public class ItemCategoryRepositoryImpl implements ItemCategoryRepository {
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, category.getName());
-            int affectedRows = ps.executeUpdate();
 
+            int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Creating category failed, no rows affected.");
             }
@@ -41,7 +41,6 @@ public class ItemCategoryRepositoryImpl implements ItemCategoryRepository {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, id);
-
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     ItemCategory category = new ItemCategory();

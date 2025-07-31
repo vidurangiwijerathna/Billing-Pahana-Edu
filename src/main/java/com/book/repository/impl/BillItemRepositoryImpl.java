@@ -1,8 +1,6 @@
 package com.book.repository.impl;
 
 import com.book.entity.BillItem;
-import com.book.entity.Bill;
-import com.book.entity.Items;
 import com.book.repository.BillItemRepository;
 import com.book.util.DBConnection;
 
@@ -14,21 +12,22 @@ public class BillItemRepositoryImpl implements BillItemRepository {
 
     @Override
     public BillItem save(BillItem billItem) throws Exception {
-        String sql = "INSERT INTO bill_items (quantity, unit_price, sub_total, bill_id, item_id) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO bill_item (bill_id, item_id, quantity, price) VALUES (?, ?, ?, ?)";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, billItem.getQuantity());
-            stmt.setDouble(2, billItem.getUnitPrice());
-            stmt.setDouble(3, billItem.getSubTotal());
-            stmt.setLong(4, billItem.getBill().getId());
-            stmt.setLong(5, billItem.getItem().getId());
+            stmt.setInt(1, billItem.getBillId());
+            stmt.setInt(2, billItem.getItemId());
+            stmt.setInt(3, billItem.getQuantity());
+            stmt.setDouble(4, billItem.getPrice());
 
-            stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
 
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    billItem.setId(rs.getLong(1));
+            if (affectedRows == 0) throw new SQLException("Creating bill item failed, no rows affected.");
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    billItem.setId(generatedKeys.getInt(1));
                 }
             }
         }
@@ -37,16 +36,15 @@ public class BillItemRepositoryImpl implements BillItemRepository {
 
     @Override
     public BillItem update(BillItem billItem) throws Exception {
-        String sql = "UPDATE bill_items SET quantity=?, unit_price=?, sub_total=?, bill_id=?, item_id=? WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String sql = "UPDATE bill_item SET bill_id = ?, item_id = ?, quantity = ?, price = ? WHERE id = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setInt(1, billItem.getQuantity());
-            stmt.setDouble(2, billItem.getUnitPrice());
-            stmt.setDouble(3, billItem.getSubTotal());
-            stmt.setLong(4, billItem.getBill().getId());
-            stmt.setLong(5, billItem.getItem().getId());
-            stmt.setLong(6, billItem.getId());
+            stmt.setInt(1, billItem.getBillId());
+            stmt.setInt(2, billItem.getItemId());
+            stmt.setInt(3, billItem.getQuantity());
+            stmt.setDouble(4, billItem.getPrice());
+            stmt.setInt(5, billItem.getId());
 
             stmt.executeUpdate();
         }
@@ -54,88 +52,36 @@ public class BillItemRepositoryImpl implements BillItemRepository {
     }
 
     @Override
-    public void deleteById(Long id) throws Exception {
-        String sql = "DELETE FROM bill_items WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    public boolean delete(int id) throws Exception {
+        String sql = "DELETE FROM bill_item WHERE id = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
         }
     }
 
     @Override
-    public BillItem findById(Long id) throws Exception {
-        String sql = "SELECT * FROM bill_items WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    public List<BillItem> findByBillId(int billId) throws Exception {
+        List<BillItem> list = new ArrayList<>();
+        String sql = "SELECT * FROM bill_item WHERE bill_id = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setLong(1, id);
-
+            stmt.setInt(1, billId);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    BillItem billItem = new BillItem();
-                    billItem.setId(rs.getLong("id"));
-                    billItem.setQuantity(rs.getInt("quantity"));
-                    billItem.setUnitPrice(rs.getDouble("unit_price"));
-                    billItem.setSubTotal(rs.getDouble("sub_total"));
-
-                    Bill bill = new Bill();
-                    bill.setId(rs.getLong("bill_id"));
-                    billItem.setBill(bill);
-
-                    Items item = new Items();
-                    item.setId(rs.getLong("item_id"));
-                    billItem.setItem(item);
-
-                    return billItem;
+                while (rs.next()) {
+                    BillItem item = new BillItem();
+                    item.setId(rs.getInt("id"));
+                    item.setBillId(rs.getInt("bill_id"));
+                    item.setItemId(rs.getInt("item_id"));
+                    item.setQuantity(rs.getInt("quantity"));
+                    item.setPrice(rs.getDouble("price"));
+                    list.add(item);
                 }
             }
         }
-        return null;
-    }
-
-    @Override
-    public List<BillItem> findAll() throws Exception {
-        List<BillItem> list = new ArrayList<>();
-        String sql = "SELECT * FROM bill_items";
-
-        try (Connection conn = DBConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                BillItem billItem = new BillItem();
-                billItem.setId(rs.getLong("id"));
-                billItem.setQuantity(rs.getInt("quantity"));
-                billItem.setUnitPrice(rs.getDouble("unit_price"));
-                billItem.setSubTotal(rs.getDouble("sub_total"));
-
-                Bill bill = new Bill();
-                bill.setId(rs.getLong("bill_id"));
-                billItem.setBill(bill);
-
-                Items item = new Items();
-                item.setId(rs.getLong("item_id"));
-                billItem.setItem(item);
-
-                list.add(billItem);
-            }
-        }
         return list;
-    }
-
-    @Override
-    public boolean existsById(Long id) throws Exception {
-        String sql = "SELECT COUNT(*) FROM bill_items WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setLong(1, id);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next() && rs.getInt(1) > 0;
-            }
-        }
     }
 }

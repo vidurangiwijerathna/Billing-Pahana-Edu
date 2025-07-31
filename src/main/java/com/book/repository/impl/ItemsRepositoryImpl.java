@@ -3,6 +3,7 @@ package com.book.repository.impl;
 import com.book.entity.Items;
 import com.book.entity.ItemCategory;
 import com.book.repository.ItemsRepository;
+import com.book.repository.impl.ItemCategoryRepositoryImpl;
 import com.book.util.DBConnection;
 
 import java.sql.*;
@@ -14,7 +15,7 @@ public class ItemsRepositoryImpl implements ItemsRepository {
     private ItemCategoryRepositoryImpl categoryRepo = new ItemCategoryRepositoryImpl();
 
     @Override
-    public Items save(Items item) throws SQLException {
+    public Items save(Items item) throws Exception {
         String sql = "INSERT INTO items (name, author, price, stock, category_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -48,7 +49,7 @@ public class ItemsRepositoryImpl implements ItemsRepository {
     }
 
     @Override
-    public Items findById(Long id) throws SQLException {
+    public Items findById(Long id) throws Exception {
         String sql = "SELECT * FROM items WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -77,7 +78,7 @@ public class ItemsRepositoryImpl implements ItemsRepository {
     }
 
     @Override
-    public List<Items> findAll() throws SQLException {
+    public List<Items> findAll() throws Exception {
         List<Items> items = new ArrayList<>();
         String sql = "SELECT * FROM items";
         try (Connection conn = DBConnection.getConnection();
@@ -104,7 +105,7 @@ public class ItemsRepositoryImpl implements ItemsRepository {
     }
 
     @Override
-    public boolean update(Items item) throws SQLException {
+    public boolean update(Items item) throws Exception {
         String sql = "UPDATE items SET name = ?, author = ?, price = ?, stock = ?, category_id = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -127,7 +128,7 @@ public class ItemsRepositoryImpl implements ItemsRepository {
     }
 
     @Override
-    public boolean delete(Long id) throws SQLException {
+    public boolean delete(Long id) throws Exception {
         String sql = "DELETE FROM items WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

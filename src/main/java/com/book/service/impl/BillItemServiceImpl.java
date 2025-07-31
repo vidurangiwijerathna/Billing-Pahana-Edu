@@ -1,37 +1,58 @@
 package com.book.service.impl;
 
 import com.book.dto.BillItemDTO;
+import com.book.entity.BillItem;
+import com.book.repository.BillItemRepository;
+import com.book.repository.impl.BillItemRepositoryImpl;
 import com.book.service.BillItemService;
-import com.book.util.DBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BillItemServiceImpl implements BillItemService {
 
+    private final BillItemRepository billItemRepository = new BillItemRepositoryImpl();
+
+    private BillItemDTO mapToDTO(BillItem billItem) {
+        BillItemDTO dto = new BillItemDTO();
+        dto.setId(billItem.getId());
+        dto.setBillId(billItem.getBillId());
+        dto.setItemId(billItem.getItemId());
+        dto.setQuantity(billItem.getQuantity());
+        dto.setPrice(billItem.getPrice());  // Use getPrice() here
+        return dto;
+    }
+
+    private BillItem mapToEntity(BillItemDTO dto) {
+        BillItem entity = new BillItem();
+        entity.setId(dto.getId());
+        entity.setBillId(dto.getBillId());
+        entity.setItemId(dto.getItemId());
+        entity.setQuantity(dto.getQuantity());
+        entity.setPrice(dto.getPrice());  // Use setPrice()
+        return entity;
+    }
+
     @Override
     public List<BillItemDTO> getBillItemsByBillId(int billId) throws Exception {
-        List<BillItemDTO> items = new ArrayList<>();
-        String sql = "SELECT item_id, quantity, unit_price FROM bill_item WHERE bill_id = ?";
+        List<BillItem> billItems = billItemRepository.findByBillId(billId);
+        return billItems.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
 
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, billId);
+    @Override
+    public BillItemDTO saveBillItem(BillItemDTO billItemDTO) throws Exception {
+        BillItem saved = billItemRepository.save(mapToEntity(billItemDTO));
+        return mapToDTO(saved);
+    }
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    BillItemDTO item = new BillItemDTO();
-                    item.setItemId(rs.getInt("item_id"));
-                    item.setQuantity(rs.getInt("quantity"));
-                    item.setUnitPrice(rs.getDouble("unit_price"));
-                    items.add(item);
-                }
-            }
-        }
+    @Override
+    public BillItemDTO updateBillItem(BillItemDTO billItemDTO) throws Exception {
+        BillItem updated = billItemRepository.update(mapToEntity(billItemDTO));
+        return mapToDTO(updated);
+    }
 
-        return items;
+    @Override
+    public boolean deleteBillItem(int id) throws Exception {
+        return billItemRepository.delete(id);
     }
 }

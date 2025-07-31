@@ -1,19 +1,19 @@
 package com.book.entity;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class Bill {
-    private int billId;
+    private int id;
     private int customerId;
-    private Timestamp createdAt;
+    private Date createdAt;
 
     // Getters and Setters
-    public int getBillId() { return billId; }
-    public void setBillId(int billId) { this.billId = billId; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public int getCustomerId() { return customerId; }
     public void setCustomerId(int customerId) { this.customerId = customerId; }
 
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+    public Date getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 }

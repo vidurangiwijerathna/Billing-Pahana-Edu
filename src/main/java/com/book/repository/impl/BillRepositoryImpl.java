@@ -1,140 +1,91 @@
 package com.book.repository.impl;
 
 import com.book.entity.Bill;
-import com.book.entity.Customer;
 import com.book.repository.BillRepository;
 import com.book.util.DBConnection;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BillRepositoryImpl implements BillRepository {
 
     @Override
-    public Bill save(Bill bill) throws Exception {
-        String sql = "INSERT INTO bill (customer_id, total, created_at) VALUES (?, ?, ?)";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    public void save(Bill bill) throws Exception {
+        Connection conn = DBConnection.getConnection();
+        String sql = "INSERT INTO bill (customer_id, created_at) VALUES (?, ?)";
+        PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, bill.getCustomerId());
+        ps.setTimestamp(2, new Timestamp(bill.getCreatedAt().getTime()));
+        ps.executeUpdate();
 
-            stmt.setLong(1, bill.getCustomer().getId());
-            stmt.setDouble(2, bill.getTotal());
-            stmt.setTimestamp(3, Timestamp.valueOf(bill.getCreatedAt()));
-
-            stmt.executeUpdate();
-
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    bill.setId(rs.getLong(1));
-                }
-            }
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            bill.setId(rs.getInt(1));
         }
+
+        rs.close();
+        ps.close();
+        conn.close();
+    }
+
+    @Override
+    public Bill findById(int id) throws Exception {
+        Connection conn = DBConnection.getConnection();
+        String sql = "SELECT * FROM bill WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        Bill bill = null;
+        if (rs.next()) {
+            bill = new Bill();
+            bill.setId(rs.getInt("id"));
+            bill.setCustomerId(rs.getInt("customer_id"));
+            bill.setCreatedAt(rs.getTimestamp("created_at"));
+        }
+
+        rs.close();
+        ps.close();
+        conn.close();
         return bill;
-    }
-
-    @Override
-    public Bill update(Bill bill) throws Exception {
-        String sql = "UPDATE bill SET customer_id=?, total=?, created_at=? WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setLong(1, bill.getCustomer().getId());
-            stmt.setDouble(2, bill.getTotal());
-            stmt.setTimestamp(3, Timestamp.valueOf(bill.getCreatedAt()));
-            stmt.setLong(4, bill.getId());
-
-            stmt.executeUpdate();
-        }
-        return bill;
-    }
-
-    @Override
-    public void deleteById(Long id) throws Exception {
-        String sql = "DELETE FROM bill WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
-        }
-    }
-
-    @Override
-    public Bill findById(Long id) throws Exception {
-        String sql = "SELECT * FROM bill WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setLong(1, id);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Bill bill = new Bill();
-                    bill.setId(rs.getLong("id"));
-
-                    // Load customer reference (only id for now, can be expanded)
-                    Customer customer = new Customer();
-                    customer.setId(rs.getLong("customer_id"));
-                    bill.setCustomer(customer);
-
-                    bill.setTotal(rs.getDouble("total"));
-
-                    Timestamp ts = rs.getTimestamp("created_at");
-                    if (ts != null) {
-                        bill.setCreatedAt(ts.toLocalDateTime());
-                    }
-
-                    // You can optionally load BillItems here if needed
-
-                    return bill;
-                }
-            }
-        }
-        return null;
     }
 
     @Override
     public List<Bill> findAll() throws Exception {
         List<Bill> bills = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
         String sql = "SELECT * FROM bill";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
 
-        try (Connection conn = DBConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                Bill bill = new Bill();
-                bill.setId(rs.getLong("id"));
-
-                Customer customer = new Customer();
-                customer.setId(rs.getLong("customer_id"));
-                bill.setCustomer(customer);
-
-                bill.setTotal(rs.getDouble("total"));
-
-                Timestamp ts = rs.getTimestamp("created_at");
-                if (ts != null) {
-                    bill.setCreatedAt(ts.toLocalDateTime());
-                }
-
-                bills.add(bill);
-            }
+        while (rs.next()) {
+            Bill bill = new Bill();
+            bill.setId(rs.getInt("id"));
+            bill.setCustomerId(rs.getInt("customer_id"));
+            bill.setCreatedAt(rs.getTimestamp("created_at"));
+            bills.add(bill);
         }
+
+        rs.close();
+        ps.close();
+        conn.close();
         return bills;
     }
 
     @Override
     public boolean existsById(Long id) throws Exception {
-        String sql = "SELECT COUNT(*) FROM bill WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = DBConnection.getConnection();
+        String sql = "SELECT 1 FROM bill WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setLong(1, id);
+        ResultSet rs = ps.executeQuery();
 
-            stmt.setLong(1, id);
+        boolean exists = rs.next();
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next() && rs.getInt(1) > 0;
-            }
-        }
+        rs.close();
+        ps.close();
+        conn.close();
+        return exists;
     }
 }

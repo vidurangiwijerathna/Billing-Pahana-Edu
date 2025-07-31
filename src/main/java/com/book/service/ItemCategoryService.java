@@ -1,15 +1,13 @@
 package com.book.service;
 
 import com.book.dto.ItemCategoryDTO;
+import com.book.entity.ItemCategory;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface ItemCategoryService {
+    ItemCategory addCategory(ItemCategoryDTO dto) throws SQLException;
 
-    ItemCategoryDTO saveCategory(ItemCategoryDTO dto) throws SQLException;
-    ItemCategoryDTO getCategoryById(Long id) throws SQLException;
-    List<ItemCategoryDTO> getAllCategories() throws SQLException;
-    ItemCategoryDTO updateCategory(Long id, ItemCategoryDTO dto) throws SQLException;
-    void deleteCategory(Long id) throws SQLException;
+    List<ItemCategory> getAllCategories() throws SQLException;
 }

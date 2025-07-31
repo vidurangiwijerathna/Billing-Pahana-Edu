@@ -4,50 +4,41 @@ import com.book.dto.ItemCategoryDTO;
 import com.book.entity.ItemCategory;
 import com.book.service.ItemCategoryService;
 import com.book.service.impl.ItemCategoryServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.BufferedReader;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "ItemCategoryServlet", urlPatterns = {"/api/v2/categories/*"})
+@WebServlet(name = "ItemCategoryServlet", urlPatterns = {"/categories", "/categories/add"})
 public class ItemCategoryServlet extends HttpServlet {
 
     private final ItemCategoryService categoryService = new ItemCategoryServiceImpl();
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = req.getPathInfo(); // e.g. "/itemcategory"
-        if (path != null && path.equals("/itemcategory")) {
-            BufferedReader reader = req.getReader();
-            ItemCategoryDTO dto = objectMapper.readValue(reader, ItemCategoryDTO.class);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        ItemCategoryDTO dto = new ItemCategoryDTO();
+        dto.setName(name);
 
-            ItemCategory created = categoryService.addCategory(dto);
-            String json = objectMapper.writeValueAsString(created);
-
-            resp.setContentType("application/json");
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write(json);
+        try {
+            ItemCategory savedCategory = categoryService.addCategory(dto);
+            request.setAttribute("category", savedCategory);
+            request.getRequestDispatcher("/WEB-INF/views/category-success.jsp").forward(request, response);
+        } catch (Exception e) {
+            throw new ServletException(e);
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = req.getPathInfo(); // e.g. "/getitemcategory"
-        if (path != null && path.equals("/getitemcategory")) {
-            List<ItemCategory> categoryList = categoryService.getAllCategories();
-            String json = objectMapper.writeValueAsString(categoryList);
-
-            resp.setContentType("application/json");
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write(json);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            List<ItemCategory> categories = categoryService.getAllCategories();
+            request.setAttribute("categories", categories);
+            request.getRequestDispatcher("/WEB-INF/views/category-list.jsp").forward(request, response);
+        } catch (Exception e) {
+            throw new ServletException(e);
         }
     }
 }

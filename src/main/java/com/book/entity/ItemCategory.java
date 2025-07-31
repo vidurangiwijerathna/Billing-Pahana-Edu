@@ -1,18 +1,19 @@
 package com.book.entity;
 
 public class ItemCategory {
-
     private Long id;
     private String name;
 
-    public ItemCategory() {
-    }
+    // Default constructor
+    public ItemCategory() {}
 
+    // Parameterized constructor
     public ItemCategory(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    // Getter and Setter for id
     public Long getId() {
         return id;
     }
@@ -21,6 +22,7 @@ public class ItemCategory {
         this.id = id;
     }
 
+    // Getter and Setter for name
     public String getName() {
         return name;
     }
