@@ -7,7 +7,7 @@ public class Items {
     private String author;
     private double price;
     private int stock;
-    private ItemCategory category;  // reference to ItemCategory
+    private ItemCategory category;
 
     public Items() {
     }

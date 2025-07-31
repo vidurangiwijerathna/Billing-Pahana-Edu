@@ -26,11 +26,13 @@ public class BillServlet extends HttpServlet {
         }
     }
 
-    // Example POST to create a bill with multiple items
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             int customerId = Integer.parseInt(request.getParameter("customerId"));
+            int createdBy = Integer.parseInt(request.getParameter("createdBy"));
+            double totalAmount = Double.parseDouble(request.getParameter("totalAmount"));
+
             String[] itemIds = request.getParameterValues("itemId");
             String[] quantities = request.getParameterValues("quantity");
             String[] prices = request.getParameterValues("unitPrice");
@@ -44,7 +46,7 @@ public class BillServlet extends HttpServlet {
                 items.add(item);
             }
 
-            BillDTO billDTO = new BillDTO(customerId, items);
+            BillDTO billDTO = new BillDTO(customerId, createdBy, totalAmount, items);
             billService.createBill(billDTO);
 
             response.sendRedirect("bill");

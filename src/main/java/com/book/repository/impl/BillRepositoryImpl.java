@@ -13,10 +13,11 @@ public class BillRepositoryImpl implements BillRepository {
     @Override
     public void save(Bill bill) throws Exception {
         Connection conn = DBConnection.getConnection();
-        String sql = "INSERT INTO bill (customer_id, created_at) VALUES (?, ?)";
+        String sql = "INSERT INTO bills (customer_id, bill_date, total_amount, created_by) VALUES (?, CURRENT_TIMESTAMP, ?, ?)";
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setInt(1, bill.getCustomerId());
-        ps.setTimestamp(2, new Timestamp(bill.getCreatedAt().getTime()));
+        ps.setDouble(2, bill.getTotalAmount());
+        ps.setInt(3, bill.getCreatedBy());
         ps.executeUpdate();
 
         ResultSet rs = ps.getGeneratedKeys();
@@ -32,7 +33,7 @@ public class BillRepositoryImpl implements BillRepository {
     @Override
     public Bill findById(int id) throws Exception {
         Connection conn = DBConnection.getConnection();
-        String sql = "SELECT * FROM bill WHERE id = ?";
+        String sql = "SELECT * FROM bills WHERE id = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
@@ -42,7 +43,9 @@ public class BillRepositoryImpl implements BillRepository {
             bill = new Bill();
             bill.setId(rs.getInt("id"));
             bill.setCustomerId(rs.getInt("customer_id"));
-            bill.setCreatedAt(rs.getTimestamp("created_at"));
+            bill.setCreatedAt(rs.getTimestamp("bill_date"));
+            bill.setTotalAmount(rs.getDouble("total_amount"));
+            bill.setCreatedBy(rs.getInt("created_by"));
         }
 
         rs.close();
@@ -55,7 +58,7 @@ public class BillRepositoryImpl implements BillRepository {
     public List<Bill> findAll() throws Exception {
         List<Bill> bills = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        String sql = "SELECT * FROM bill";
+        String sql = "SELECT * FROM bills";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
 
@@ -63,7 +66,9 @@ public class BillRepositoryImpl implements BillRepository {
             Bill bill = new Bill();
             bill.setId(rs.getInt("id"));
             bill.setCustomerId(rs.getInt("customer_id"));
-            bill.setCreatedAt(rs.getTimestamp("created_at"));
+            bill.setCreatedAt(rs.getTimestamp("bill_date"));
+            bill.setTotalAmount(rs.getDouble("total_amount"));
+            bill.setCreatedBy(rs.getInt("created_by"));
             bills.add(bill);
         }
 
@@ -76,7 +81,7 @@ public class BillRepositoryImpl implements BillRepository {
     @Override
     public boolean existsById(Long id) throws Exception {
         Connection conn = DBConnection.getConnection();
-        String sql = "SELECT 1 FROM bill WHERE id = ?";
+        String sql = "SELECT 1 FROM bills WHERE id = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setLong(1, id);
         ResultSet rs = ps.executeQuery();
