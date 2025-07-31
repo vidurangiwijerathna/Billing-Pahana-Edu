@@ -1,10 +1,8 @@
 package com.book.service;
 
-import com.book.entity.BillItem;
+import com.book.dto.BillItemDTO;
 import java.util.List;
 
 public interface BillItemService {
-    List<BillItem> getAllBillItems();
-    BillItem getBillItemById(Long id);
-    void deleteBillItem(Long id);
+    List<BillItemDTO> getBillItemsByBillId(int billId) throws Exception;
 }

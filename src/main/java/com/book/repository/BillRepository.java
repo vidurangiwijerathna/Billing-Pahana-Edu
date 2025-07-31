@@ -1,7 +1,13 @@
 package com.book.repository;
 
 import com.book.entity.Bill;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-public interface BillRepository extends JpaRepository<Bill, Long> {
+public interface BillRepository {
+    Bill save(Bill bill) throws Exception;
+    Bill update(Bill bill) throws Exception;
+    void deleteById(Long id) throws Exception;
+    Bill findById(Long id) throws Exception;
+    List<Bill> findAll() throws Exception;
+    boolean existsById(Long id) throws Exception;
 }

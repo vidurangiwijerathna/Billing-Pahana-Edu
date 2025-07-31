@@ -1,8 +1,8 @@
-package com.book.controller;
+package com.book.servlet;
 
-import com.book.dto.ItemDTO;
+import com.book.dto.ItemsDTO;
 import com.book.entity.Items;
-import com.book.service.ItemService;
+import com.book.service.ItemsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +15,20 @@ import java.util.List;
 @RequestMapping("/api/v2/items")
 @CrossOrigin("*")
 @RequiredArgsConstructor
-public class ItemController {
+public class ItemServlet {
 
-    private final ItemService itemService;
+    private final ItemsService itemService;
 
     @PostMapping(path = "/itemcreate")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Items> addItem(@Valid @RequestBody ItemDTO dto) {
+    public ResponseEntity<Items> addItem(@Valid @RequestBody ItemsDTO dto) {
         return ResponseEntity.ok(itemService.addItem(dto));
     }
 
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Items> updateItem(@PathVariable Long id, @Valid @RequestBody ItemDTO dto) {
+    public ResponseEntity<Items> updateItem(@PathVariable Long id, @Valid @RequestBody ItemsDTO dto) {
         return ResponseEntity.ok(itemService.updateItem(id, dto));
     }
 

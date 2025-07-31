@@ -1,28 +1,19 @@
 package com.book.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.sql.Timestamp;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Bill {
+    private int billId;
+    private int customerId;
+    private Timestamp createdAt;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // Getters and Setters
+    public int getBillId() { return billId; }
+    public void setBillId(int billId) { this.billId = billId; }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    public int getCustomerId() { return customerId; }
+    public void setCustomerId(int customerId) { this.customerId = customerId; }
 
-    private double total;
-
-    private LocalDateTime createdAt;
-
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
-    private List<BillItem> items;
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 }

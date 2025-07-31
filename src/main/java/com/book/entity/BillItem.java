@@ -1,31 +1,24 @@
 package com.book.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-
-@Entity
-@Table(name = "bill_items")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class BillItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private int id;
+    private int billId;
+    private int itemId;
     private int quantity;
+    private double price;
 
-    private double unitPrice;
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    private double subTotal;
+    public int getBillId() { return billId; }
+    public void setBillId(int billId) { this.billId = billId; }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bill_id")
-    private Bill bill;
+    public int getItemId() { return itemId; }
+    public void setItemId(int itemId) { this.itemId = itemId; }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "item_id")
-    private Items item;
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 }

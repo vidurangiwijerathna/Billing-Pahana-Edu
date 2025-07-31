@@ -1,66 +1,39 @@
 package com.book.entity;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "customers")
 public class Customer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "account_number", unique = true, nullable = false)
-    private String accountNumber;
-
-    @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "address")
+    private String email;
+    private String telephone;
+    private String accountNumber;
     private String address;
 
-    @Column(name = "telephone", nullable = false)
-    private String telephone;
+    public Customer() {}
 
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public Customer(Long id, String name, String email, String telephone, String accountNumber, String address) {
         this.id = id;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
+        this.email = email;
+        this.telephone = telephone;
+        this.accountNumber = accountNumber;
         this.address = address;
     }
 
-    public String getTelephone() {
-        return telephone;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getTelephone() { return telephone; }
+    public void setTelephone(String telephone) { this.telephone = telephone; }
+
+    public String getAccountNumber() { return accountNumber; }
+    public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 }

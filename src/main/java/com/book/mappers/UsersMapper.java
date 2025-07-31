@@ -1,33 +1,23 @@
-package com.book.mappers;
+package com.book.mapper;
 
-import com.book.dto.UsersDTO;
-import com.book.dto.requestDTO.RegistrationOrLoginAdminsDTO;
-import com.book.dto.requestDTO.RegistrationOrLoginAdminsDTO;
 import com.book.entity.Users;
-import org.springframework.stereotype.Component;
+import com.book.dto.UsersDTO;
 
-@Component
 public class UsersMapper {
 
-    public Users dtoToEntityForRegOrLogin(RegistrationOrLoginAdminsDTO registrationOrLoginAdminsDTO){
-        return new Users(
-                registrationOrLoginAdminsDTO.email(),
-                registrationOrLoginAdminsDTO.name(),
-                registrationOrLoginAdminsDTO.address(),
-                registrationOrLoginAdminsDTO.tele(),
-                registrationOrLoginAdminsDTO.password(),
-                registrationOrLoginAdminsDTO.role()
-        );
+    public static UsersDTO toDTO(Users user) {
+        if (user == null) return null;
+        return new UsersDTO(user.getId(), user.getUsername(), user.getEmail(), user.getRole());
     }
 
-    public UsersDTO EntityToDTO(Users user){
-        return new UsersDTO(
-                user.getId(),
-                user.getEmail(),
-                user.getName(),
-                user.getAddress(),
-                user.getTele()
-        );
+    public static Users toEntity(UsersDTO dto) {
+        if (dto == null) return null;
+        Users user = new Users();
+        user.setId(dto.getId());
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        // Password not included in DTO for security reasons; set separately if needed
+        user.setRole(dto.getRole());
+        return user;
     }
 }
-

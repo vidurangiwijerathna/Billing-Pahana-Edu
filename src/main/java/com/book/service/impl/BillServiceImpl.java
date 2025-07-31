@@ -2,65 +2,109 @@ package com.book.service.impl;
 
 import com.book.dto.BillDTO;
 import com.book.dto.BillItemDTO;
-import com.book.entity.*;
-import com.book.repository.*;
 import com.book.service.BillService;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.book.util.DBConnection;
 
-import java.time.LocalDateTime;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
 
-    private final BillRepository billRepository;
-    private final BillItemRepository billItemRepository;
-    private final ItemRepo itemRepo;
-    private final CustomerRepository customerRepository;
+    @Override
+    public int createBill(BillDTO billDTO) throws Exception {
+        Connection con = null;
+        PreparedStatement psBill = null;
+        PreparedStatement psBillItem = null;
+        ResultSet generatedKeys = null;
+
+        try {
+            con = DBConnection.getConnection();
+            con.setAutoCommit(false);
+
+            String insertBillSQL = "INSERT INTO bill (customer_id, created_at) VALUES (?, ?)";
+            psBill = con.prepareStatement(insertBillSQL, Statement.RETURN_GENERATED_KEYS);
+            psBill.setInt(1, billDTO.getCustomerId());
+            psBill.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            psBill.executeUpdate();
+
+            generatedKeys = psBill.getGeneratedKeys();
+            int billId = -1;
+            if (generatedKeys.next()) {
+                billId = generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Creating bill failed, no ID obtained.");
+            }
+
+            String insertBillItemSQL = "INSERT INTO bill_item (bill_id, item_id, quantity, unit_price) VALUES (?, ?, ?, ?)";
+            psBillItem = con.prepareStatement(insertBillItemSQL);
+
+            for (BillItemDTO item : billDTO.getItems()) {
+                psBillItem.setInt(1, billId);
+                psBillItem.setInt(2, item.getItemId());
+                psBillItem.setInt(3, item.getQuantity());
+                psBillItem.setDouble(4, item.getUnitPrice());
+                psBillItem.addBatch();
+            }
+
+            psBillItem.executeBatch();
+
+            con.commit();
+
+            return billId;
+        } catch (Exception e) {
+            if (con != null) con.rollback();
+            throw e;
+        } finally {
+            if (generatedKeys != null) generatedKeys.close();
+            if (psBill != null) psBill.close();
+            if (psBillItem != null) psBillItem.close();
+            if (con != null) con.setAutoCommit(true);
+            if (con != null) con.close();
+        }
+    }
 
     @Override
-    @Transactional
-    public Bill createBill(BillDTO dto) {
-        List<BillItem> billItems = new ArrayList<>();
-        double total = 0;
+    public List<BillDTO> getAllBills() throws Exception {
+        List<BillDTO> bills = new ArrayList<>();
+        String sql = "SELECT id, customer_id FROM bill ORDER BY created_at DESC";
 
-        for (BillItemDTO itemDto : dto.getItems()) {
-            Items item = itemRepo.findById(itemDto.getItemId())
-                    .orElseThrow(() -> new RuntimeException("Item not found with id: " + itemDto.getItemId()));
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-            double subTotal = item.getPrice() * itemDto.getQuantity();
-            total += subTotal;
+            while (rs.next()) {
+                int billId = rs.getInt("id");
+                int customerId = rs.getInt("customer_id");
 
-            BillItem billItem = new BillItem();
-            billItem.setItem(item);
-            billItem.setQuantity(itemDto.getQuantity());
-            billItem.setUnitPrice(item.getPrice());
-            billItem.setSubTotal(subTotal);
+                List<BillItemDTO> items = getBillItemsByBillId(billId);
 
-            billItems.add(billItem);
+                BillDTO billDTO = new BillDTO(customerId, items);
+                bills.add(billDTO);
+            }
         }
 
-        Customer customer = customerRepository.findById(dto.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + dto.getCustomerId()));
+        return bills;
+    }
 
-        Bill bill = new Bill();
-        bill.setCustomer(customer);
-        bill.setTotal(total);
-        bill.setCreatedAt(LocalDateTime.now());
+    private List<BillItemDTO> getBillItemsByBillId(int billId) throws Exception {
+        List<BillItemDTO> items = new ArrayList<>();
+        String sql = "SELECT item_id, quantity, unit_price FROM bill_item WHERE bill_id = ?";
 
-        Bill savedBill = billRepository.save(bill);
-
-        for (BillItem billItem : billItems) {
-            billItem.setBill(savedBill);
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, billId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    BillItemDTO item = new BillItemDTO();
+                    item.setItemId(rs.getInt("item_id"));
+                    item.setQuantity(rs.getInt("quantity"));
+                    item.setUnitPrice(rs.getDouble("unit_price"));
+                    items.add(item);
+                }
+            }
         }
-        billItemRepository.saveAll(billItems);
 
-        savedBill.setItems(billItems);
-
-        return savedBill;
+        return items;
     }
 }

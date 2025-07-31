@@ -1,21 +1,29 @@
 package com.book.dto;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
-
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class BillDTO {
-
-    @NotNull(message = "Customer ID is required")
-    private Long customerId;
-
-    @NotEmpty(message = "Bill must contain at least one item")
-    @Valid
+    private int customerId;
     private List<BillItemDTO> items;
+
+    public BillDTO() {}
+
+    public BillDTO(int customerId, List<BillItemDTO> items) {
+        this.customerId = customerId;
+        this.items = items;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public List<BillItemDTO> getItems() {
+        return items;
+    }
+    public void setItems(List<BillItemDTO> items) {
+        this.items = items;
+    }
 }

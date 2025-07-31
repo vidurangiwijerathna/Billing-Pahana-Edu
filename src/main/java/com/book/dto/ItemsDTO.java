@@ -1,18 +1,17 @@
-package com.book.entity;
+package com.book.dto;
 
-public class Items {
-
+public class ItemsDTO {
     private Long id;
     private String name;
     private String author;
     private double price;
     private int stock;
-    private ItemCategory category;  // reference to ItemCategory
+    private ItemCategoryDTO category;
 
-    public Items() {
+    public ItemsDTO() {
     }
 
-    public Items(Long id, String name, String author, double price, int stock, ItemCategory category) {
+    public ItemsDTO(Long id, String name, String author, double price, int stock, ItemCategoryDTO category) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -61,11 +60,11 @@ public class Items {
         this.stock = stock;
     }
 
-    public ItemCategory getCategory() {
+    public ItemCategoryDTO getCategory() {
         return category;
     }
 
-    public void setCategory(ItemCategory category) {
+    public void setCategory(ItemCategoryDTO category) {
         this.category = category;
     }
 }

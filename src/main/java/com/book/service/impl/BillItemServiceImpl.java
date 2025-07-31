@@ -1,39 +1,37 @@
 package com.book.service.impl;
 
-import com.book.entity.BillItem;
-import com.book.repository.BillItemRepository;
+import com.book.dto.BillItemDTO;
 import com.book.service.BillItemService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.book.util.DBConnection;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
 public class BillItemServiceImpl implements BillItemService {
 
-    private final BillItemRepository billItemRepository;
-
     @Override
-    @Transactional(readOnly = true)
-    public List<BillItem> getAllBillItems() {
-        return billItemRepository.findAll();
-    }
+    public List<BillItemDTO> getBillItemsByBillId(int billId) throws Exception {
+        List<BillItemDTO> items = new ArrayList<>();
+        String sql = "SELECT item_id, quantity, unit_price FROM bill_item WHERE bill_id = ?";
 
-    @Override
-    @Transactional(readOnly = true)
-    public BillItem getBillItemById(Long id) {
-        return billItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("BillItem not found with ID: " + id));
-    }
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, billId);
 
-    @Override
-    @Transactional
-    public void deleteBillItem(Long id) {
-        if (!billItemRepository.existsById(id)) {
-            throw new RuntimeException("BillItem not found with ID: " + id);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    BillItemDTO item = new BillItemDTO();
+                    item.setItemId(rs.getInt("item_id"));
+                    item.setQuantity(rs.getInt("quantity"));
+                    item.setUnitPrice(rs.getDouble("unit_price"));
+                    items.add(item);
+                }
+            }
         }
-        billItemRepository.deleteById(id);
+
+        return items;
     }
 }
