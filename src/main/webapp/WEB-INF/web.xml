@@ -50,7 +50,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ItemServlet</servlet-name>
-        <url-pattern>/items</url-pattern>
+        <url-pattern>/items/*</url-pattern>
     </servlet-mapping>
 
 
