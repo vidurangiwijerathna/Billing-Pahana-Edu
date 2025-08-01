@@ -1,42 +1,88 @@
 package com.book.service.impl;
 
+import com.book.dao.ItemsDAO;
 import com.book.dto.ItemsDTO;
+import com.book.entity.ItemCategory;
 import com.book.entity.Items;
 import com.book.service.ItemsService;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemsServiceImpl implements ItemsService {
 
+    private ItemsDAO itemsDAO = new ItemsDAO();
+
     @Override
     public Items addItem(ItemsDTO dto) {
-        // Logic to convert DTO to entity and save to DB
-        Items item = new Items();
-        item.setName(dto.getName());
-        item.setAuthor(dto.getAuthor());
-        item.setPrice(dto.getPrice());
-        item.setStock(dto.getStock());
-        // Set category, if applicable
+        try {
+            Items item = new Items();
+            item.setName(dto.getName());
+            item.setAuthor(dto.getAuthor());
+            item.setPrice(dto.getPrice());
+            item.setStock(dto.getStock());
 
-        // Save to DB here using DAO (not shown)
-        return item; // Return saved entity (possibly with ID)
+            if (dto.getCategoryId() != 0) {  // Check for non-zero category ID
+                ItemCategory category = new ItemCategory();
+                category.setId(Long.valueOf(dto.getCategoryId()));  // Convert int to Long
+                item.setCategory(category);
+            } else {
+                item.setCategory(null);
+            }
+
+            return itemsDAO.save(item);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public Items updateItem(Long id, ItemsDTO dto) {
-        // Your update logic
-        return null;
+        try {
+            Items existingItem = itemsDAO.findById(id);
+            if (existingItem == null) {
+                return null;
+            }
+
+            existingItem.setName(dto.getName());
+            existingItem.setAuthor(dto.getAuthor());
+            existingItem.setPrice(dto.getPrice());
+            existingItem.setStock(dto.getStock());
+
+            if (dto.getCategoryId() != 0) {
+                ItemCategory category = new ItemCategory();
+                category.setId(Long.valueOf(dto.getCategoryId()));
+                existingItem.setCategory(category);
+            } else {
+                existingItem.setCategory(null);
+            }
+
+            boolean success = itemsDAO.update(existingItem);
+            return success ? existingItem : null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public void deleteItem(Long id) {
-        // Your delete logic
+        try {
+            itemsDAO.delete(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public List<Items> getAllItems() {
-        // Your list fetch logic
-        return new ArrayList<>();
+        try {
+            return itemsDAO.findAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 }

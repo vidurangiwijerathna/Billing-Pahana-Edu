@@ -7,17 +7,19 @@ public class ItemsDTO {
     private double price;
     private int stock;
     private ItemCategoryDTO category;
+    private int categoryId;
 
     public ItemsDTO() {
     }
 
-    public ItemsDTO(Long id, String name, String author, double price, int stock, ItemCategoryDTO category) {
+    public ItemsDTO(Long id, String name, String author, double price, int stock, ItemCategoryDTO category, int categoryId) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.price = price;
         this.stock = stock;
         this.category = category;
+        this.categoryId = categoryId;
     }
 
     public Long getId() {
@@ -66,5 +68,13 @@ public class ItemsDTO {
 
     public void setCategory(ItemCategoryDTO category) {
         this.category = category;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }
