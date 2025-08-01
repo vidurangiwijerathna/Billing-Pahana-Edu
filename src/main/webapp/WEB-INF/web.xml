@@ -44,6 +44,15 @@
         <servlet-name>BillItemServlet</servlet-name>
         <url-pattern>/bill-items/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ItemServlet</servlet-name>
+        <servlet-class>com.book.servlet.ItemServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ItemServlet</servlet-name>
+        <url-pattern>/items</url-pattern>
+    </servlet-mapping>
+
 
     <!-- Session Timeout in minutes -->
     <session-config>

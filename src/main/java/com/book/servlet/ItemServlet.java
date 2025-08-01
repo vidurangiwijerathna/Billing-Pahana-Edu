@@ -3,44 +3,94 @@ package com.book.servlet;
 import com.book.dto.ItemsDTO;
 import com.book.entity.Items;
 import com.book.service.ItemsService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import com.book.service.impl.ItemsServiceImpl;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/v2/items")
-@CrossOrigin("*")
-@RequiredArgsConstructor
-public class ItemServlet {
+@WebServlet("/items")
+public class ItemServlet extends HttpServlet {
 
-    private final ItemsService itemService;
+    private ItemsService itemService = new ItemsServiceImpl();
 
-    @PostMapping(path = "/itemcreate")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Items> addItem(@Valid @RequestBody ItemsDTO dto) {
-        return ResponseEntity.ok(itemService.addItem(dto));
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        List<Items> itemsList = itemService.getAllItems();
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        out.println("<html><body>");
+        out.println("<h2>Item List</h2>");
+        for (Items item : itemsList) {
+            out.println("<p>ID: " + item.getId() + " | Name: " + item.getName() +
+                    " | Price: " + item.getPrice() + "</p>");
+        }
+        out.println("</body></html>");
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Items> updateItem(@PathVariable Long id, @Valid @RequestBody ItemsDTO dto) {
-        return ResponseEntity.ok(itemService.updateItem(id, dto));
+        String name = request.getParameter("name");
+        String author = request.getParameter("author");
+        double price = Double.parseDouble(request.getParameter("price"));
+        int stock = Integer.parseInt(request.getParameter("stock"));
+        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+
+        ItemsDTO dto = new ItemsDTO();
+        dto.setName(name);
+        dto.setAuthor(author);
+        dto.setPrice(price);
+        dto.setStock(stock);
+        dto.setCategoryId(categoryId);
+
+        Items createdItem = itemService.addItem(dto);
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<p>Item added: " + createdItem.getName() + "</p>");
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> deleteItem(@PathVariable Long id) {
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Long id = Long.parseLong(request.getParameter("id"));
         itemService.deleteItem(id);
-        return ResponseEntity.ok("Item deleted");
+
+        response.setContentType("text/plain");
+        response.getWriter().write("Item deleted");
     }
 
-    @GetMapping
-    public ResponseEntity<List<Items>> getAllItems() {
-        return ResponseEntity.ok(itemService.getAllItems());
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Long id = Long.parseLong(request.getParameter("id"));
+        String name = request.getParameter("name");
+        String author = request.getParameter("author");
+        double price = Double.parseDouble(request.getParameter("price"));
+        int stock = Integer.parseInt(request.getParameter("stock"));
+        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+
+        ItemsDTO dto = new ItemsDTO();
+        dto.setName(name);
+        dto.setAuthor(author);
+        dto.setPrice(price);
+        dto.setStock(stock);
+        dto.setCategoryId(categoryId);
+
+        Items updatedItem = itemService.updateItem(id, dto);
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<p>Item updated: " + updatedItem.getName() + "</p>");
     }
 }
