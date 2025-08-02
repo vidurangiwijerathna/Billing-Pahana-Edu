@@ -1,7 +1,7 @@
 package com.book.servlet;
 
-import com.book.dao.UserDAO;
-import com.book.entity.User;
+import com.book.dao.UsersDAO;
+import com.book.entity.Users;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -19,14 +19,14 @@ public class RegisterServlet extends HttpServlet {
         String role = request.getParameter("role"); // ADMIN or CASHIER
 
         try {
-            User user = new User();
-            user.setName(name);
+            Users user = new Users();
+            user.setUsername(name);
             user.setEmail(email);
             user.setPassword(password);
             user.setRole(role);
 
-            UserDAO userDAO = new UserDAO();
-            userDAO.save(user);
+            UsersDAO userDAO = new UsersDAO();
+            userDAO.save(user); // <-- must exist!
 
             response.sendRedirect("login.jsp");
 

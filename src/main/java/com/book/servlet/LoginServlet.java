@@ -1,7 +1,7 @@
 package com.book.servlet;
 
-import com.book.dao.UserDAO;
-import com.book.entity.User;
+import com.book.dao.UsersDAO;
+import com.book.entity.Users;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -17,8 +17,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         try {
-            UserDAO userDAO = new UserDAO();
-            User user = userDAO.findByEmail(email);
+            UsersDAO userDAO = new UsersDAO();
+            Users user = userDAO.findByEmail(email);
 
             if (user != null && user.getPassword().equals(password)) {
                 HttpSession session = request.getSession();
