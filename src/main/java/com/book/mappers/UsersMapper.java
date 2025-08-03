@@ -1,23 +1,18 @@
 package com.book.mapper;
 
-import com.book.entity.Users;
 import com.book.dto.UsersDTO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UsersMapper {
 
-    public static UsersDTO toDTO(Users user) {
-        if (user == null) return null;
-        return new UsersDTO(user.getId(), user.getUsername(), user.getEmail(), user.getRole());
-    }
+    public static UsersDTO mapToDTO(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
+        String username = resultSet.getString("username");
+        String email = resultSet.getString("email");
+        String password = resultSet.getString("password"); // Get password if available
+        String role = resultSet.getString("role");
 
-    public static Users toEntity(UsersDTO dto) {
-        if (dto == null) return null;
-        Users user = new Users();
-        user.setId(dto.getId());
-        user.setUsername(dto.getUsername());
-        user.setEmail(dto.getEmail());
-        // Password not included in DTO for security reasons; set separately if needed
-        user.setRole(dto.getRole());
-        return user;
+        return new UsersDTO(id, username, email, password, role);
     }
 }

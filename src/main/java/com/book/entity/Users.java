@@ -1,37 +1,61 @@
-package com.book.servlet;
+package com.book.entity;
 
-import com.book.dao.UsersDAO;
-import com.book.entity.Users;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+public class Users {
+    private int id;
+    private String username;
+    private String email;
+    private String password;
+    private String role;
 
-import java.io.IOException;
+    // Constructor
+    public Users() {}
 
-@WebServlet("/register")
-public class RegisterServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public Users(int id, String username, String email, String password, String role) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String role = request.getParameter("role"); // ADMIN or CASHIER
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
 
-        try {
-            Users user = new Users(); // fixed class name
-            user.setUsername(name);   // fixed method name
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setRole(role);
+    public void setId(int id) {
+        this.id = id;
+    }
 
-            UsersDAO userDAO = new UsersDAO();
-            userDAO.save(user);
+    public String getUsername() {
+        return username;
+    }
 
-            response.sendRedirect("login.jsp");
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

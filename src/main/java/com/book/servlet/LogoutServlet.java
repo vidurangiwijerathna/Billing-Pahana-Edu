@@ -10,11 +10,10 @@ import java.io.IOException;
 public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false); // Get session if exists
         if (session != null) {
-            session.invalidate();
+            session.invalidate();  // Destroy session
         }
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");  // Redirect to login page
     }
 }

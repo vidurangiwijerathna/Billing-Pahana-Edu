@@ -13,22 +13,27 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String name = request.getParameter("name");
+        String username = request.getParameter("username");  // Make sure your form uses "username"
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String role = request.getParameter("role"); // ADMIN or CASHIER
 
         try {
             Users user = new Users();
-            user.setUsername(name);
+            user.setUsername(username);
             user.setEmail(email);
             user.setPassword(password);
             user.setRole(role);
 
             UsersDAO userDAO = new UsersDAO();
-            userDAO.save(user); // <-- must exist!
+            boolean created = userDAO.save(user);
 
-            response.sendRedirect("login.jsp");
+            if (created) {
+                response.sendRedirect("login.jsp");  // Success: redirect to login page
+            } else {
+                request.setAttribute("error", "Failed to register user.");
+                request.getRequestDispatcher("register.jsp").forward(request, response);
+            }
 
         } catch (Exception e) {
             throw new ServletException(e);
