@@ -7,25 +7,19 @@ import java.sql.SQLException;
 public class DBConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/pahanaedubilling?useSSL=false&serverTimezone=UTC";
-    private static final String USER = "root";       // your DB username
-    private static final String PASSWORD = "Root@123456"; // your DB password
+    private static final String USER = "root"; // Replace with your MySQL username if different
+    private static final String PASSWORD = "Root@123456"; // Replace with your MySQL password
 
-    private static Connection connection;
-
-    // Load driver class once
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Load the JDBC driver
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    // Get connection (creates new if null or closed)
+    // Always return a new, fresh connection to avoid threading issues
     public static Connection getConnection() throws SQLException {
-        if (connection == null || connection.isClosed()) {
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        }
-        return connection;
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
