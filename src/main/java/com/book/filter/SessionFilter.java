@@ -1,10 +1,17 @@
 package com.book.filter;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.*;
 import java.io.IOException;
 
+@WebFilter("/*")
 public class SessionFilter implements Filter {
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // No initialization needed
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -12,26 +19,28 @@ public class SessionFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession session = req.getSession(false);
 
-        String loginURI = req.getContextPath() + "/login.jsp";
-        String loginServlet = req.getContextPath() + "/login";
-        String registerServlet = req.getContextPath() + "/register";
+        String uri = req.getRequestURI();
 
-        boolean loggedIn = req.getSession(false) != null && req.getSession(false).getAttribute("user") != null;
-        boolean loginRequest = req.getRequestURI().equals(loginURI) || req.getRequestURI().equals(loginServlet);
-        boolean registerRequest = req.getRequestURI().equals(registerServlet);
-        boolean resourceRequest = req.getRequestURI().startsWith(req.getContextPath() + "/resources/");
+        // List of paths that do NOT require login
+        boolean isPublicPath = uri.endsWith("login.jsp") ||
+                uri.endsWith("register.jsp") ||
+                uri.endsWith("index.jsp") ||
+                uri.endsWith("/") ||
+                uri.contains("/auth") ||
+                uri.contains("/resources") ||
+                uri.contains("css") ||
+                uri.contains("js") ||
+                uri.contains("images");
 
-        if (loggedIn || loginRequest || registerRequest || resourceRequest) {
-            chain.doFilter(request, response);  // Continue to requested resource
+        boolean loggedIn = (session != null && session.getAttribute("user") != null);
+
+        if (loggedIn || isPublicPath) {
+            chain.doFilter(request, response);
         } else {
-            res.sendRedirect(loginURI);  // Redirect to login page if not logged in
+            res.sendRedirect(req.getContextPath() + "/login.jsp");
         }
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        // No initialization needed
     }
 
     @Override

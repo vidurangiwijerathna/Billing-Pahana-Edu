@@ -10,13 +10,15 @@ import java.io.IOException;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String username = request.getParameter("username");  // Make sure your form uses "username"
+        String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String role = request.getParameter("role"); // ADMIN or CASHIER
+        String role = request.getParameter("role");
 
         try {
             Users user = new Users();
@@ -25,18 +27,21 @@ public class RegisterServlet extends HttpServlet {
             user.setPassword(password);
             user.setRole(role);
 
-            UsersDAO userDAO = new UsersDAO();
-            boolean created = userDAO.save(user);
+            UsersDAO usersDAO = new UsersDAO();
+            boolean created = usersDAO.save(user);
 
             if (created) {
-                response.sendRedirect("login.jsp");  // Success: redirect to login page
+                request.setAttribute("success", "Registration successful! Please login.");
             } else {
-                request.setAttribute("error", "Failed to register user.");
-                request.getRequestDispatcher("register.jsp").forward(request, response);
+                request.setAttribute("error", "Failed to register user. Please try again.");
             }
 
+            request.getRequestDispatcher("/register.jsp").forward(request, response);
+
         } catch (Exception e) {
-            throw new ServletException(e);
+            e.printStackTrace();
+            request.setAttribute("error", "Error occurred: " + e.getMessage());
+            request.getRequestDispatcher("/register.jsp").forward(request, response);
         }
     }
 }

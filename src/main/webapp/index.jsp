@@ -1,45 +1,57 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>PahanaEdu Billing System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            padding: 40px;
-            text-align: center;
-        }
-        h1 {
-            color: #333;
-        }
-        .menu {
-            margin-top: 30px;
-        }
-        .menu a {
-            display: inline-block;
-            margin: 10px;
-            padding: 12px 25px;
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-        }
-        .menu a:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-<h1>📚 Welcome to PahanaEdu Bookshop Billing System</h1>
-<p>Select a module below:</p>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding-top: 100px;
+        background-image: url('${pageContext.request.contextPath}/images/bookshop.jpeg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: white;
+    }
 
-<div class="menu">
-    <a href="users?action=list">👤 Users</a>
-    <a href="customers?action=list">👥 Customers</a>
-    <a href="items?action=list">📘 Items</a>
-    <a href="categories?action=list">🗂️ Categories</a>
-    <a href="bills?action=list">🧾 Bills</a>
-</div>
+    h1 {
+        color: #ffffff;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
 
-</body>
-</html>
+    .tab-container {
+        margin-top: 30px;
+    }
+
+    .tab-button {
+        padding: 12px 25px;
+        margin: 0 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+    }
+
+    .tab-button:hover {
+        background-color: #2980b9;
+    }
+
+    nav {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background-color: rgba(0,0,0,0.7);
+        padding: 10px;
+        text-align: right;
+    }
+
+    nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    nav a:hover {
+        text-decoration: underline;
+    }
+</style>

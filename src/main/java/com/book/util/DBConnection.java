@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/bookshop_db"; // change DB name if needed
-    private static final String USERNAME = "root"; // update if your MySQL username is different
-    private static final String PASSWORD = "your_mysql_password"; // replace with your actual password
+    private static final String URL = "jdbc:mysql://localhost:3306/bookshop_db";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "your_mysql_password";
 
     static {
         try {

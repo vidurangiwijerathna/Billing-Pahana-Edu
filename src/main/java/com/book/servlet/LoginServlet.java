@@ -10,6 +10,16 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    // Show login page on GET request
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
+
+    // Handle login form POST submission
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -32,7 +42,7 @@ public class LoginServlet extends HttpServlet {
                 }
             } else {
                 request.setAttribute("error", "Invalid email or password");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/login.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
