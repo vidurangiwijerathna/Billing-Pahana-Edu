@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
+
 <nav>
   <div class="nav-left">
     <a href="index.jsp">Home</a>

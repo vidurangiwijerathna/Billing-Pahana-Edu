@@ -1,30 +1,12 @@
-package com.book.model;
+package com.book.dto;
 
-import jakarta.persistence.*;
-import java.sql.Timestamp;
-
-@Entity
-@Table(name = "customer")
-public class Customer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CustomerDTO {
     private Long id;
-
     private String name;
-
-    @Column(unique = true, nullable = false)
     private String email;
-
     private String phone;
-
     private String address;
-
-    @Column(name = "account_number", unique = true, nullable = false)
     private String accountNumber;
-
-    @Column(name = "created_at")
-    private Timestamp createdAt;
 
     // Getters & Setters
     public Long getId() { return id; }
@@ -44,7 +26,4 @@ public class Customer {
 
     public String getAccountNumber() { return accountNumber; }
     public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
-
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 }

@@ -1,0 +1,30 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+    <title>Add Customer</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav>
+    <div class="nav-left">
+        <a href="index.jsp">Home</a>
+        <a href="about.jsp">About</a>
+        <a href="help.jsp">Help</a>
+    </div>
+    <div class="nav-right">
+        <a href="logout.jsp">Logout</a>
+    </div>
+</nav>
+
+<h2>Add New Customer</h2>
+<form method="post" action="customers">
+    Name: <input type="text" name="name" required><br>
+    Email: <input type="email" name="email" required><br>
+    Phone: <input type="text" name="phone"><br>
+    Address: <textarea name="address"></textarea><br>
+    Account Number: <input type="text" name="accountNumber" required><br><br>
+    <input type="submit" value="Add Customer">
+</form>
+</body>
+</html>
