@@ -1,46 +1,60 @@
 package com.book.dto;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class BillDTO {
-    private int customerId;
-    private int createdBy;
+    private Long id;
+    private Long customerId;
+    private Timestamp billDate;
     private double totalAmount;
+    private Long createdBy;
     private List<BillItemDTO> items;
 
-    public BillDTO() {}
-
-    public BillDTO(int customerId, int createdBy, double totalAmount, List<BillItemDTO> items) {
-        this.customerId = customerId;
-        this.createdBy = createdBy;
-        this.totalAmount = totalAmount;
-        this.items = items;
+    public Long getId() {
+        return id;
     }
 
-    public int getCustomerId() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCustomerId() {
         return customerId;
     }
-    public void setCustomerId(int customerId) {
+
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
-    public int getCreatedBy() {
-        return createdBy;
+    public Timestamp getBillDate() {
+        return billDate;
     }
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
+
+    public void setBillDate(Timestamp billDate) {
+        this.billDate = billDate;
     }
 
     public double getTotalAmount() {
         return totalAmount;
     }
+
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
     }
 
     public List<BillItemDTO> getItems() {
         return items;
     }
+
     public void setItems(List<BillItemDTO> items) {
         this.items = items;
     }

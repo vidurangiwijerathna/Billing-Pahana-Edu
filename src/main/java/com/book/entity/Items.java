@@ -1,16 +1,31 @@
 package com.book.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "items")
 public class Items {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
     private String author;
+
+    @Column(nullable = false)
     private double price;
+
+    @Column(nullable = false)
     private int stock;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
     private ItemCategory category;
 
-    public Items() {
-    }
+    public Items() {}
 
     public Items(Long id, String name, String author, double price, int stock, ItemCategory category) {
         this.id = id;
@@ -20,6 +35,8 @@ public class Items {
         this.stock = stock;
         this.category = category;
     }
+
+    // Getters and setters
 
     public Long getId() {
         return id;

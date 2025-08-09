@@ -1,85 +1,67 @@
 package com.book.dao;
 
 import com.book.entity.Items;
-import com.book.entity.ItemCategory;
-import com.book.util.DBConnection;
+import com.book.repository.ItemsRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsDAO {
+public class ItemsDAO implements ItemsRepository {
 
-    private ItemCategoryDAO itemCategoryDAO = new ItemCategoryDAO();
+    private Connection getConnection() throws SQLException {
+        // Your DB connection logic
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/bookstore", "root", "password");
+    }
 
-    public Items save(Items item) throws SQLException {
+    @Override
+    public Items save(Items item) throws Exception {
         String sql = "INSERT INTO items (name, author, price, stock, category_id) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            ps.setString(1, item.getName());
-            ps.setString(2, item.getAuthor());
-            ps.setDouble(3, item.getPrice());
-            ps.setInt(4, item.getStock());
-
-            if (item.getCategory() != null && item.getCategory().getId() != null) {
-                ps.setLong(5, item.getCategory().getId());
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, item.getName());
+            stmt.setString(2, item.getAuthor());
+            stmt.setDouble(3, item.getPrice());
+            stmt.setInt(4, item.getStock());
+            if (item.getCategory() != null) {
+                stmt.setLong(5, item.getCategory().getId());
             } else {
-                ps.setNull(5, Types.BIGINT);
+                stmt.setNull(5, Types.BIGINT);
             }
+            stmt.executeUpdate();
 
-            int affectedRows = ps.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Creating item failed, no rows affected.");
-            }
-
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    item.setId(generatedKeys.getLong(1));
-                } else {
-                    throw new SQLException("Creating item failed, no ID obtained.");
-                }
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                item.setId(rs.getLong(1));
             }
         }
         return item;
     }
 
-    public Items findById(Long id) throws SQLException {
+    @Override
+    public Items findById(Long id) throws Exception {
         String sql = "SELECT * FROM items WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setLong(1, id);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Items item = new Items();
-                    item.setId(rs.getLong("id"));
-                    item.setName(rs.getString("name"));
-                    item.setAuthor(rs.getString("author"));
-                    item.setPrice(rs.getDouble("price"));
-                    item.setStock(rs.getInt("stock"));
-
-                    Long categoryId = rs.getLong("category_id");
-                    if (categoryId != null && categoryId != 0) {
-                        ItemCategory category = itemCategoryDAO.findById(categoryId);
-                        item.setCategory(category);
-                    }
-                    return item;
-                }
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Items item = new Items();
+                item.setId(rs.getLong("id"));
+                item.setName(rs.getString("name"));
+                item.setAuthor(rs.getString("author"));
+                item.setPrice(rs.getDouble("price"));
+                item.setStock(rs.getInt("stock"));
+                return item;
             }
         }
         return null;
     }
 
-    public List<Items> findAll() throws SQLException {
-        List<Items> items = new ArrayList<>();
+    @Override
+    public List<Items> findAll() throws Exception {
+        List<Items> list = new ArrayList<>();
         String sql = "SELECT * FROM items";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
+        try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 Items item = new Items();
                 item.setId(rs.getLong("id"));
@@ -87,47 +69,36 @@ public class ItemsDAO {
                 item.setAuthor(rs.getString("author"));
                 item.setPrice(rs.getDouble("price"));
                 item.setStock(rs.getInt("stock"));
-
-                Long categoryId = rs.getLong("category_id");
-                if (categoryId != null && categoryId != 0) {
-                    ItemCategory category = itemCategoryDAO.findById(categoryId);
-                    item.setCategory(category);
-                }
-                items.add(item);
+                list.add(item);
             }
         }
-        return items;
+        return list;
     }
 
-    public boolean update(Items item) throws SQLException {
-        String sql = "UPDATE items SET name = ?, author = ?, price = ?, stock = ?, category_id = ? WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, item.getName());
-            ps.setString(2, item.getAuthor());
-            ps.setDouble(3, item.getPrice());
-            ps.setInt(4, item.getStock());
-
-            if (item.getCategory() != null && item.getCategory().getId() != null) {
-                ps.setLong(5, item.getCategory().getId());
+    @Override
+    public boolean update(Items item) throws Exception {
+        String sql = "UPDATE items SET name=?, author=?, price=?, stock=?, category_id=? WHERE id=?";
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, item.getName());
+            stmt.setString(2, item.getAuthor());
+            stmt.setDouble(3, item.getPrice());
+            stmt.setInt(4, item.getStock());
+            if (item.getCategory() != null) {
+                stmt.setLong(5, item.getCategory().getId());
             } else {
-                ps.setNull(5, Types.BIGINT);
+                stmt.setNull(5, Types.BIGINT);
             }
-
-            ps.setLong(6, item.getId());
-
-            return ps.executeUpdate() > 0;
+            stmt.setLong(6, item.getId());
+            return stmt.executeUpdate() > 0; // ✅ return boolean
         }
     }
 
-    public boolean delete(Long id) throws SQLException {
-        String sql = "DELETE FROM items WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setLong(1, id);
-            return ps.executeUpdate() > 0;
+    @Override
+    public boolean delete(Long id) throws Exception {
+        String sql = "DELETE FROM items WHERE id=?";
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            return stmt.executeUpdate() > 0; // ✅ return boolean
         }
     }
 }

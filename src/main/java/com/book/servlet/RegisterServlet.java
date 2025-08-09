@@ -2,7 +2,7 @@ package com.book.servlet;
 
 import com.book.dao.UsersDAO;
 import com.book.entity.Users;
-import jakarta.servlet.ServletException;
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
@@ -33,14 +33,13 @@ public class RegisterServlet extends HttpServlet {
             if (created) {
                 request.setAttribute("success", "Registration successful! Please login.");
             } else {
-                request.setAttribute("error", "Failed to register user. Please try again.");
+                request.setAttribute("error", "Failed to register user.");
             }
 
             request.getRequestDispatcher("/register.jsp").forward(request, response);
-
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Error occurred: " + e.getMessage());
+            request.setAttribute("error", "Error: " + e.getMessage());
             request.getRequestDispatcher("/register.jsp").forward(request, response);
         }
     }

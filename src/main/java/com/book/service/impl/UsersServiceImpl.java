@@ -28,12 +28,12 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public boolean registerUser(Users user) throws SQLException {
-        return usersRepo.save(user);
+        return usersRepo.save(user) != null;
     }
 
     @Override
     public boolean updateUser(Users user) throws SQLException {
-        return usersRepo.update(user);
+        return usersRepo.update(user) != null;
     }
 
     @Override

@@ -1,17 +1,22 @@
 package com.book.entity;
 
+import java.sql.Timestamp;
+
 public class Users {
-    private int id;
+
+    private Long id;
     private String username;
     private String email;
     private String password;
     private String role;
+    private Timestamp createdAt;
 
-    // Constructor
-    public Users() {}
+    // Default constructor
+    public Users() {
+    }
 
-    public Users(int id, String username, String email, String password, String role) {
-        this.id = id;
+    // Constructor with parameters (optional)
+    public Users(String username, String email, String password, String role) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -19,11 +24,11 @@ public class Users {
     }
 
     // Getters and Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,5 +62,13 @@ public class Users {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

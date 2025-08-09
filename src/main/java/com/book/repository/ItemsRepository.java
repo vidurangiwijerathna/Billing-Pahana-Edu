@@ -1,7 +1,6 @@
 package com.book.repository;
 
 import com.book.entity.Items;
-
 import java.util.List;
 
 public interface ItemsRepository {
@@ -15,5 +14,4 @@ public interface ItemsRepository {
     boolean update(Items item) throws Exception;
 
     boolean delete(Long id) throws Exception;
-
 }

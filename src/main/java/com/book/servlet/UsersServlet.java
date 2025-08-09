@@ -9,7 +9,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet("/users")
@@ -101,11 +100,13 @@ public class UsersServlet extends HttpServlet {
             if (idStr != null && !idStr.isEmpty()) {
                 id = Integer.parseInt(idStr);
             }
+
             String username = request.getParameter("username");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             String role = request.getParameter("role");
 
+            // Construct Users without createdAt (DB handles it)
             Users user = new Users(id, username, email, password, role);
 
             if (id == 0) {

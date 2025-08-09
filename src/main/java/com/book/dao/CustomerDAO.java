@@ -1,102 +1,109 @@
 package com.book.dao;
 
-import com.book.dto.CustomerDTO;
-import com.book.util.DBConnection;
+import com.book.entity.Customer;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAO {
 
-    public boolean existsByAccountNumber(String accountNumber) throws Exception {
-        Connection con = DBConnection.getConnection();
-        String sql = "SELECT id FROM customer WHERE account_number = ?";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, accountNumber);
-        ResultSet rs = ps.executeQuery();
-        return rs.next();
-    }
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("bookshop");
 
-    public CustomerDTO save(CustomerDTO dto) throws Exception {
-        Connection con = DBConnection.getConnection();
-        String sql = "INSERT INTO customer (account_number, name, address, telephone) VALUES (?, ?, ?, ?)";
-        PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        ps.setString(1, dto.getAccountNumber());
-        ps.setString(2, dto.getName());
-        ps.setString(3, dto.getAddress());
-        ps.setString(4, dto.getTelephone());
-        ps.executeUpdate();
-        ResultSet rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            dto.setId(rs.getLong(1));
+    public boolean existsByAccountNumber(String accountNumber) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Long> query = em.createQuery(
+                    "SELECT COUNT(c) FROM Customer c WHERE c.accountNumber = :accountNumber", Long.class);
+            query.setParameter("accountNumber", accountNumber);
+            Long count = query.getSingleResult();
+            return count > 0;
+        } finally {
+            em.close();
         }
-        return dto;
     }
 
-    public List<CustomerDTO> findAll() throws Exception {
-        Connection con = DBConnection.getConnection();
-        String sql = "SELECT * FROM customer";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        List<CustomerDTO> list = new ArrayList<>();
-        while (rs.next()) {
-            CustomerDTO dto = new CustomerDTO();
-            dto.setId(rs.getLong("id"));
-            dto.setAccountNumber(rs.getString("account_number"));
-            dto.setName(rs.getString("name"));
-            dto.setAddress(rs.getString("address"));
-            dto.setTelephone(rs.getString("telephone"));
-            list.add(dto);
+    public Customer save(Customer customer) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(customer);
+            em.getTransaction().commit();
+            return customer;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
         }
-        return list;
     }
 
-    public CustomerDTO findById(Long id) throws Exception {
-        Connection con = DBConnection.getConnection();
-        String sql = "SELECT * FROM customer WHERE id = ?";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setLong(1, id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            CustomerDTO dto = new CustomerDTO();
-            dto.setId(rs.getLong("id"));
-            dto.setAccountNumber(rs.getString("account_number"));
-            dto.setName(rs.getString("name"));
-            dto.setAddress(rs.getString("address"));
-            dto.setTelephone(rs.getString("telephone"));
-            return dto;
+    public List<Customer> findAll() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Customer> query = em.createQuery("SELECT c FROM Customer c", Customer.class);
+            return query.getResultList();
+        } finally {
+            em.close();
         }
-        return null;
     }
 
-    public CustomerDTO update(CustomerDTO dto) throws Exception {
-        Connection con = DBConnection.getConnection();
-        String sql = "UPDATE customer SET account_number=?, name=?, address=?, telephone=? WHERE id=?";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, dto.getAccountNumber());
-        ps.setString(2, dto.getName());
-        ps.setString(3, dto.getAddress());
-        ps.setString(4, dto.getTelephone());
-        ps.setLong(5, dto.getId());
-        ps.executeUpdate();
-        return dto;
+    public Customer findById(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.find(Customer.class, id);
+        } finally {
+            em.close();
+        }
     }
 
-    public boolean delete(Long id) throws Exception {
-        Connection con = DBConnection.getConnection();
-        String sql = "DELETE FROM customer WHERE id=?";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setLong(1, id);
-        return ps.executeUpdate() > 0;
+    public Customer update(Customer customer) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Customer updatedCustomer = em.merge(customer);
+            em.getTransaction().commit();
+            return updatedCustomer;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
-    public boolean existsById(Long id) throws Exception {
-        Connection con = DBConnection.getConnection();
-        String sql = "SELECT id FROM customer WHERE id=?";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setLong(1, id);
-        ResultSet rs = ps.executeQuery();
-        return rs.next();
+    public boolean delete(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Customer customer = em.find(Customer.class, id);
+            if (customer != null) {
+                em.remove(customer);
+                em.getTransaction().commit();
+                return true;
+            }
+            em.getTransaction().rollback();
+            return false;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public boolean existsById(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Long> query = em.createQuery(
+                    "SELECT COUNT(c) FROM Customer c WHERE c.id = :id", Long.class);
+            query.setParameter("id", id);
+            Long count = query.getSingleResult();
+            return count > 0;
+        } finally {
+            em.close();
+        }
     }
 }

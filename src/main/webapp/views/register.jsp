@@ -1,37 +1,35 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register - Pahana Edu Billing</title>
+    <title>Register</title>
+    <style>
+        /* Basic simple styling */
+        body { font-family: Arial, sans-serif; }
+        form { max-width: 400px; margin: auto; padding: 1em; border: 1px solid #ccc; }
+        input { width: 100%; padding: 0.5em; margin-bottom: 1em; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
 </head>
 <body>
-<h2>Register Page</h2>
 
-<c:if test="${not empty success}">
-    <p style="color: green;">${success}</p>
-</c:if>
+<h2 style="text-align:center;">Register</h2>
+
 <c:if test="${not empty error}">
-    <p style="color: red;">${error}</p>
+    <p class="error">${error}</p>
 </c:if>
 
-<form method="post" action="${pageContext.request.contextPath}/register">
-    <label>Username:</label><br>
-    <input type="text" name="username" required><br><br>
-
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br><br>
-
-    <label>Password:</label><br>
-    <input type="password" name="password" required><br><br>
-
-    <label>Role:</label><br>
-    <select name="role" required>
-        <option value="ADMIN">ADMIN</option>
-        <option value="CASHIER">CASHIER</option>
-    </select><br><br>
-
+<form action="register" method="post">
+    <input type="text" name="username" placeholder="Username" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="password" name="password" placeholder="Password" required />
     <button type="submit">Register</button>
 </form>
+
+<p style="text-align:center;">
+    Already have an account? <a href="login">Login here</a>
+</p>
+
 </body>
 </html>

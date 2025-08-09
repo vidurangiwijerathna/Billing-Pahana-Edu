@@ -1,58 +1,99 @@
 package com.book.service.impl;
 
-import com.book.dto.BillItemDTO;
-import com.book.entity.BillItem;
-import com.book.repository.BillItemRepository;
-import com.book.repository.impl.BillItemRepositoryImpl;
-import com.book.service.BillItemService;
+import com.book.dao.ItemsDAO;
+import com.book.dto.ItemsDTO;
+import com.book.entity.ItemCategory;
+import com.book.entity.Items;
+import com.book.service.ItemsService;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class BillItemServiceImpl implements BillItemService {
+public class ItemsServiceImpl implements ItemsService {
 
-    private final BillItemRepository billItemRepository = new BillItemRepositoryImpl();
+    private ItemsDAO itemsDAO = new ItemsDAO();
 
-    private BillItemDTO mapToDTO(BillItem billItem) {
-        BillItemDTO dto = new BillItemDTO();
-        dto.setId(billItem.getId());
-        dto.setBillId(billItem.getBillId());
-        dto.setItemId(billItem.getItemId());
-        dto.setQuantity(billItem.getQuantity());
-        dto.setPrice(billItem.getPrice());  // Use getPrice() here
-        return dto;
-    }
+    @Override
+    public Items addItem(ItemsDTO dto) {
+        try {
+            Items item = new Items();
+            item.setName(dto.getName());
+            item.setAuthor(dto.getAuthor());
+            item.setPrice(dto.getPrice());
+            item.setStock(dto.getStock());
 
-    private BillItem mapToEntity(BillItemDTO dto) {
-        BillItem entity = new BillItem();
-        entity.setId(dto.getId());
-        entity.setBillId(dto.getBillId());
-        entity.setItemId(dto.getItemId());
-        entity.setQuantity(dto.getQuantity());
-        entity.setPrice(dto.getPrice());  // Use setPrice()
-        return entity;
+            if (dto.getCategoryId() != 0) {
+                ItemCategory category = new ItemCategory();
+                category.setId(Long.valueOf(dto.getCategoryId()));
+                item.setCategory(category);
+            } else {
+                item.setCategory(null);
+            }
+
+            return itemsDAO.save(item);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public List<BillItemDTO> getBillItemsByBillId(int billId) throws Exception {
-        List<BillItem> billItems = billItemRepository.findByBillId(billId);
-        return billItems.stream().map(this::mapToDTO).collect(Collectors.toList());
+    public Items updateItem(Long id, ItemsDTO dto) {
+        try {
+            Items existingItem = itemsDAO.findById(id);
+            if (existingItem == null) {
+                return null;
+            }
+
+            existingItem.setName(dto.getName());
+            existingItem.setAuthor(dto.getAuthor());
+            existingItem.setPrice(dto.getPrice());
+            existingItem.setStock(dto.getStock());
+
+            if (dto.getCategoryId() != 0) {
+                ItemCategory category = new ItemCategory();
+                category.setId(Long.valueOf(dto.getCategoryId()));
+                existingItem.setCategory(category);
+            } else {
+                existingItem.setCategory(null);
+            }
+
+            boolean success = itemsDAO.update(existingItem); // ✅ now returns boolean
+            return success ? existingItem : null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public BillItemDTO saveBillItem(BillItemDTO billItemDTO) throws Exception {
-        BillItem saved = billItemRepository.save(mapToEntity(billItemDTO));
-        return mapToDTO(saved);
+    public void deleteItem(Long id) {
+        try {
+            itemsDAO.delete(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public BillItemDTO updateBillItem(BillItemDTO billItemDTO) throws Exception {
-        BillItem updated = billItemRepository.update(mapToEntity(billItemDTO));
-        return mapToDTO(updated);
-    }
-
-    @Override
-    public boolean deleteBillItem(int id) throws Exception {
-        return billItemRepository.delete(id);
+    public List<Items> getAllItems() {
+        try {
+            return itemsDAO.findAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 }

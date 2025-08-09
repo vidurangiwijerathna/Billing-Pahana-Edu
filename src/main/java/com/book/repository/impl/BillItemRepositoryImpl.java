@@ -2,86 +2,70 @@ package com.book.repository.impl;
 
 import com.book.entity.BillItem;
 import com.book.repository.BillItemRepository;
-import com.book.util.DBConnection;
 
-import java.sql.*;
-import java.util.ArrayList;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 public class BillItemRepositoryImpl implements BillItemRepository {
 
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("bookshopPU");
+
     @Override
-    public BillItem save(BillItem billItem) throws Exception {
-        String sql = "INSERT INTO bill_item (bill_id, item_id, quantity, price) VALUES (?, ?, ?, ?)";
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            stmt.setInt(1, billItem.getBillId());
-            stmt.setInt(2, billItem.getItemId());
-            stmt.setInt(3, billItem.getQuantity());
-            stmt.setDouble(4, billItem.getPrice());
-
-            int affectedRows = stmt.executeUpdate();
-
-            if (affectedRows == 0) throw new SQLException("Creating bill item failed, no rows affected.");
-
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    billItem.setId(generatedKeys.getInt(1));
-                }
-            }
+    public BillItem save(BillItem billItem) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(billItem);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
         return billItem;
     }
 
     @Override
-    public BillItem update(BillItem billItem) throws Exception {
-        String sql = "UPDATE bill_item SET bill_id = ?, item_id = ?, quantity = ?, price = ? WHERE id = ?";
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-
-            stmt.setInt(1, billItem.getBillId());
-            stmt.setInt(2, billItem.getItemId());
-            stmt.setInt(3, billItem.getQuantity());
-            stmt.setDouble(4, billItem.getPrice());
-            stmt.setInt(5, billItem.getId());
-
-            stmt.executeUpdate();
+    public BillItem update(BillItem billItem) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            billItem = em.merge(billItem);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
         return billItem;
     }
 
     @Override
-    public boolean delete(int id) throws Exception {
-        String sql = "DELETE FROM bill_item WHERE id = ?";
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            return stmt.executeUpdate() > 0;
+    public boolean delete(int id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            BillItem billItem = em.find(BillItem.class, id);
+            if (billItem != null) {
+                em.getTransaction().begin();
+                em.remove(billItem);
+                em.getTransaction().commit();
+                return true;
+            }
+            return false;
+        } finally {
+            em.close();
         }
     }
 
     @Override
-    public List<BillItem> findByBillId(int billId) throws Exception {
-        List<BillItem> list = new ArrayList<>();
-        String sql = "SELECT * FROM bill_item WHERE bill_id = ?";
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-
-            stmt.setInt(1, billId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    BillItem item = new BillItem();
-                    item.setId(rs.getInt("id"));
-                    item.setBillId(rs.getInt("bill_id"));
-                    item.setItemId(rs.getInt("item_id"));
-                    item.setQuantity(rs.getInt("quantity"));
-                    item.setPrice(rs.getDouble("price"));
-                    list.add(item);
-                }
-            }
+    public List<BillItem> findByBillId(int billId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<BillItem> query = em.createQuery(
+                    "SELECT b FROM BillItem b WHERE b.billId = :billId", BillItem.class);
+            query.setParameter("billId", billId);
+            return query.getResultList();
+        } finally {
+            em.close();
         }
-        return list;
     }
 }

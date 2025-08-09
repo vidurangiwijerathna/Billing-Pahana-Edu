@@ -1,19 +1,27 @@
 package com.book.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "item_category")
 public class ItemCategory {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
-    // Default constructor
     public ItemCategory() {}
 
-    // Parameterized constructor
     public ItemCategory(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    // Getter and Setter for id
+    // Getters and setters
+
     public Long getId() {
         return id;
     }
@@ -22,7 +30,6 @@ public class ItemCategory {
         this.id = id;
     }
 
-    // Getter and Setter for name
     public String getName() {
         return name;
     }

@@ -1,91 +1,85 @@
 package com.book.dao;
 
 import com.book.entity.ItemCategory;
-import com.book.util.DBConnection;
 
-import java.sql.*;
-import java.util.ArrayList;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
+
 import java.util.List;
 
 public class ItemCategoryDAO {
 
-    public ItemCategory save(ItemCategory category) throws SQLException {
-        String sql = "INSERT INTO item_category (name) VALUES (?)";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPU");
 
-            ps.setString(1, category.getName());
-            int affectedRows = ps.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Creating category failed, no rows affected.");
-            }
-
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    category.setId(generatedKeys.getLong(1));
-                } else {
-                    throw new SQLException("Creating category failed, no ID obtained.");
-                }
-            }
-        }
-        return category;
-    }
-
-    public ItemCategory findById(Long id) throws SQLException {
-        String sql = "SELECT * FROM item_category WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setLong(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    ItemCategory category = new ItemCategory();
-                    category.setId(rs.getLong("id"));
-                    category.setName(rs.getString("name"));
-                    return category;
-                }
-            }
-        }
-        return null;
-    }
-
-    public List<ItemCategory> findAll() throws SQLException {
-        List<ItemCategory> categories = new ArrayList<>();
-        String sql = "SELECT * FROM item_category";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                ItemCategory category = new ItemCategory();
-                category.setId(rs.getLong("id"));
-                category.setName(rs.getString("name"));
-                categories.add(category);
-            }
-        }
-        return categories;
-    }
-
-    public boolean update(ItemCategory category) throws SQLException {
-        String sql = "UPDATE item_category SET name = ? WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, category.getName());
-            ps.setLong(2, category.getId());
-
-            return ps.executeUpdate() > 0;
+    public ItemCategory save(ItemCategory category) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(category);
+            em.getTransaction().commit();
+            return category;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
         }
     }
 
-    public boolean delete(Long id) throws SQLException {
-        String sql = "DELETE FROM item_category WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+    public ItemCategory findById(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.find(ItemCategory.class, id);
+        } finally {
+            em.close();
+        }
+    }
 
-            ps.setLong(1, id);
-            return ps.executeUpdate() > 0;
+    public List<ItemCategory> findAll() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<ItemCategory> query = em.createQuery("SELECT c FROM ItemCategory c", ItemCategory.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public ItemCategory update(ItemCategory category) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            ItemCategory updated = em.merge(category);
+            em.getTransaction().commit();
+            return updated;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public boolean delete(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            ItemCategory category = em.find(ItemCategory.class, id);
+            if (category != null) {
+                em.remove(category);
+                em.getTransaction().commit();
+                return true;
+            } else {
+                em.getTransaction().rollback();
+                return false;
+            }
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
         }
     }
 }
