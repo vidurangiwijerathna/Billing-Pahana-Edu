@@ -2,14 +2,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Pahana Edu Billing - Home</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="login.jsp">Login Page</a>
-<a href="register.jsp">Register Page</a>
+<nav>
+    <div class="nav-left">
+        <a href="index.jsp">Home</a>
+        <a href="about.jsp">About</a>
+        <a href="help.jsp">Help</a>
+    </div>
+    <div class="nav-right">
+        <a href="logout.jsp">Logout</a>
+    </div>
+</nav>
+
+<div class="container" style="text-align:center;">
+    <h1>Welcome to Pahana Edu Billing System</h1>
+    <p>Please <a href="login.jsp">Login</a> or <a href="register.jsp">Register</a> to continue.</p>
+</div>
+
+<footer>
+    &copy; 2025 Pahana Edu. All rights reserved.
+</footer>
 
 </body>
 </html>

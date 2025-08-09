@@ -1,0 +1,116 @@
+/* styles.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4f8;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #004d99;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+nav .nav-left,
+nav .nav-right {
+    display: flex;
+    gap: 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+nav a:hover {
+    background-color: #0066cc;
+}
+
+.container {
+    max-width: 400px;
+    background: white;
+    margin: 50px auto;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #004d99;
+    margin-bottom: 25px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+    font-weight: 600;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form select {
+    width: 100%;
+    padding: 10px 8px;
+    margin-bottom: 20px;
+    border: 1.8px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form select:focus {
+    border-color: #004d99;
+    outline: none;
+}
+
+form input[type="submit"] {
+    width: 100%;
+    background-color: #004d99;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form input[type="submit"]:hover {
+    background-color: #003366;
+}
+
+.error-message {
+    color: #cc0000;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.success-message {
+    color: #007a00;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+footer {
+    text-align: center;
+    padding: 15px 0;
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 50px;
+}
