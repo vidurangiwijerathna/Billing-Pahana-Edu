@@ -1,20 +1,18 @@
+// src/com/book/service/impl/CustomerServiceImpl.java
 package com.book.service.impl;
 
 import com.book.dto.CustomerDTO;
 import com.book.entity.Customer;
 import com.book.repository.CustomerRepository;
+import com.book.repository.impl.CustomerRepositoryImpl;
 import com.book.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 public class CustomerServiceImpl implements CustomerService {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository = new CustomerRepositoryImpl();
 
     private CustomerDTO mapToDTO(Customer customer) {
         CustomerDTO dto = new CustomerDTO();
@@ -37,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO saveCustomer(CustomerDTO dto) {
+    public CustomerDTO saveCustomer(CustomerDTO dto) throws Exception {
         if (customerRepository.existsByAccountNumber(dto.getAccountNumber())) {
             throw new RuntimeException("Account number already exists");
         }
@@ -46,32 +44,36 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerDTO> getAllCustomers() {
+    public List<CustomerDTO> getAllCustomers() throws Exception {
         return customerRepository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
     @Override
-    public CustomerDTO getCustomerById(Long id) {
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    public CustomerDTO getCustomerById(Long id) throws Exception {
+        Customer customer = customerRepository.findById(id);
+        if (customer == null) {
+            throw new RuntimeException("Customer not found");
+        }
         return mapToDTO(customer);
     }
 
     @Override
-    public CustomerDTO updateCustomer(Long id, CustomerDTO dto) {
-        Customer existing = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    public CustomerDTO updateCustomer(Long id, CustomerDTO dto) throws Exception {
+        Customer existing = customerRepository.findById(id);
+        if (existing == null) {
+            throw new RuntimeException("Customer not found");
+        }
 
         existing.setAccountNumber(dto.getAccountNumber());
         existing.setName(dto.getName());
         existing.setAddress(dto.getAddress());
         existing.setTelephone(dto.getTelephone());
 
-        return mapToDTO(customerRepository.save(existing));
+        return mapToDTO(customerRepository.update(existing));
     }
 
     @Override
-    public void deleteCustomer(Long id) {
+    public void deleteCustomer(Long id) throws Exception {
         if (!customerRepository.existsById(id)) {
             throw new RuntimeException("Customer not found");
         }

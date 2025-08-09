@@ -1,8 +1,9 @@
 package com.book.service;
 
 import com.book.dto.BillDTO;
-import com.book.entity.Bill;
+import java.util.List;
 
 public interface BillService {
-    Bill createBill(BillDTO dto);
+    void createBill(BillDTO billDTO) throws Exception; // ✅ Correct name
+    List<BillDTO> getAllBills() throws Exception;
 }

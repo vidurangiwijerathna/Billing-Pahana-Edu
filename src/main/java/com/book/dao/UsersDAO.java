@@ -1,32 +1,39 @@
 package com.book.dao;
 
-
 import com.book.entity.Users;
-import com.book.repository.UserRepo;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
-import java.util.List;
-
-@Component
 public class UsersDAO {
 
-    private final UserRepo userRepo;
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("bookshop");
 
-    //constructor parameter
-    public UsersDAO(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public boolean save(Users user) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
+        }
     }
 
-    public Users createUsers(Users admin){
-        return userRepo.save(admin);
-    }
-
-    public List<Users> getAllUsers(){
-        return userRepo.findAll();
-    }
-
-    public List<Users> getAllUsersByEmail(String email){
-        return userRepo.findByEmail(email);
+    public Users findByEmail(String email) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Users> query = em.createQuery("SELECT u FROM Users u WHERE u.email = :email", Users.class);
+            query.setParameter("email", email);
+            return query.getResultStream().findFirst().orElse(null);
+        } finally {
+            em.close();
+        }
     }
 }
-

@@ -1,33 +1,18 @@
-package com.book.mappers;
+package com.book.mapper;
 
 import com.book.dto.UsersDTO;
-import com.book.dto.requestDTO.RegistrationOrLoginAdminsDTO;
-import com.book.dto.requestDTO.RegistrationOrLoginAdminsDTO;
-import com.book.entity.Users;
-import org.springframework.stereotype.Component;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-@Component
 public class UsersMapper {
 
-    public Users dtoToEntityForRegOrLogin(RegistrationOrLoginAdminsDTO registrationOrLoginAdminsDTO){
-        return new Users(
-                registrationOrLoginAdminsDTO.email(),
-                registrationOrLoginAdminsDTO.name(),
-                registrationOrLoginAdminsDTO.address(),
-                registrationOrLoginAdminsDTO.tele(),
-                registrationOrLoginAdminsDTO.password(),
-                registrationOrLoginAdminsDTO.role()
-        );
-    }
+    public static UsersDTO mapToDTO(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
+        String username = resultSet.getString("username");
+        String email = resultSet.getString("email");
+        String password = resultSet.getString("password"); // Get password if available
+        String role = resultSet.getString("role");
 
-    public UsersDTO EntityToDTO(Users user){
-        return new UsersDTO(
-                user.getId(),
-                user.getEmail(),
-                user.getName(),
-                user.getAddress(),
-                user.getTele()
-        );
+        return new UsersDTO(id, username, email, password, role);
     }
 }
-

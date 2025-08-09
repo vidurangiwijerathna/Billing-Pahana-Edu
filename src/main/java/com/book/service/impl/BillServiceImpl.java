@@ -4,65 +4,71 @@ import com.book.dto.BillDTO;
 import com.book.dto.BillItemDTO;
 import com.book.entity.Bill;
 import com.book.entity.BillItem;
-import com.book.entity.Items;
-import com.book.exception.ResourceNotFoundException;
-import com.book.repository.BillItemRepository;
+import com.book.entity.Customer;
+import com.book.entity.Users;
 import com.book.repository.BillRepository;
-import com.book.repository.ItemRepo;
+import com.book.repository.impl.BillRepositoryImpl;
 import com.book.service.BillService;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
 
-    private final BillRepository billRepository;
-    private final BillItemRepository billItemRepository;
-    private final ItemRepo itemRepo;
+    private BillRepository billRepository = new BillRepositoryImpl();
 
     @Override
-    @Transactional
-    public Bill createBill(BillDTO dto) {
-        List<BillItem> billItems = new ArrayList<>();
-        double total = 0;
-
-        for (BillItemDTO itemDto : dto.getItems()) {
-            Items item = itemRepo.findById(itemDto.getItemId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + itemDto.getItemId()));
-
-            double subTotal = item.getPrice() * itemDto.getQuantity();
-            total += subTotal;
-
-            BillItem billItem = new BillItem();
-            billItem.setItem(item);
-            billItem.setQuantity(itemDto.getQuantity());
-            billItem.setUnitPrice(item.getPrice());
-            billItem.setSubTotal(subTotal);
-
-            billItems.add(billItem);
-        }
-
+    public void createBill(BillDTO billDTO) throws Exception {
         Bill bill = new Bill();
-        bill.setCustomerName(dto.getCustomerName());
-        bill.setTotal(total);
-        bill.setCreatedAt(LocalDateTime.now());
 
-        Bill savedBill = billRepository.save(bill);
+        // Set customer reference (only ID)
+        Customer customer = new Customer();
+        customer.setId(billDTO.getCustomerId());
+        bill.setCustomer(customer);
 
-        // Link each bill item to the saved bill before saving bill items
-        for (BillItem billItem : billItems) {
-            billItem.setBill(savedBill);
+        // Set createdBy reference (only ID)
+        Users createdBy = new Users();
+        createdBy.setId(billDTO.getCreatedBy());
+        bill.setCreatedBy(createdBy);
+
+        bill.setTotalAmount(billDTO.getTotalAmount());
+
+        // Map BillItems
+        List<BillItem> billItems = new ArrayList<>();
+        if (billDTO.getItems() != null) {
+            for (BillItemDTO itemDTO : billDTO.getItems()) {
+                BillItem item = new BillItem();
+
+                item.setItemId(itemDTO.getItemId());
+                item.setQuantity(itemDTO.getQuantity());
+                item.setPrice(itemDTO.getPrice());
+
+                // Set back reference to Bill
+                item.setBill(bill);
+
+                billItems.add(item);
+            }
         }
-        billItemRepository.saveAll(billItems);
+        bill.setBillItems(billItems);
 
-        savedBill.setItems(billItems);
+        // Save Bill + BillItems in one go
+        billRepository.save(bill);
+    }
 
-        return savedBill;
+    @Override
+    public List<BillDTO> getAllBills() throws Exception {
+        List<Bill> bills = billRepository.findAll();
+        List<BillDTO> billDTOs = new ArrayList<>();
+
+        for (Bill bill : bills) {
+            BillDTO dto = new BillDTO();
+            dto.setId(bill.getId());
+            dto.setCustomerId(bill.getCustomer().getId());
+            dto.setTotalAmount(bill.getTotalAmount());
+            dto.setCreatedBy(bill.getCreatedBy().getId());
+            dto.setBillDate(new java.sql.Timestamp(bill.getCreatedAt().getTime()));
+            billDTOs.add(dto);
+        }
+        return billDTOs;
     }
 }

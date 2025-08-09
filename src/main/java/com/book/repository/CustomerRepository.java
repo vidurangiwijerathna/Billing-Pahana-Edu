@@ -1,8 +1,14 @@
 package com.book.repository;
 
 import com.book.entity.Customer;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    boolean existsByAccountNumber(String accountNumber);
+public interface CustomerRepository {
+    Customer save(Customer customer) throws Exception;
+    Customer update(Customer customer) throws Exception;
+    void deleteById(Long id) throws Exception;
+    Customer findById(Long id) throws Exception;
+    List<Customer> findAll() throws Exception;
+    boolean existsById(Long id) throws Exception;
+    boolean existsByAccountNumber(String accountNumber) throws Exception;
 }
