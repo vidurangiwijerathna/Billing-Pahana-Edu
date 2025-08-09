@@ -1,8 +1,12 @@
 package com.book.service;
 
 import com.book.dao.UserDAO;
+import com.book.dto.UserDTO;
 import com.book.model.User;
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserService {
     private UserDAO userDAO = new UserDAO();
@@ -31,5 +35,19 @@ public class UserService {
             return user;
         }
         return null;
+    }
+
+    // New method to fetch all users as UserDTO list
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userDAO.findAll();
+
+        return users.stream().map(user -> {
+            UserDTO dto = new UserDTO();
+            dto.setName(user.getName());
+            dto.setEmail(user.getEmail());
+            dto.setPassword(user.getPassword());  // Note: Usually avoid exposing passwords
+            dto.setRole(user.getRole());
+            return dto;
+        }).collect(Collectors.toList());
     }
 }

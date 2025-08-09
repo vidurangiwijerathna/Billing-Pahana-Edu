@@ -11,12 +11,17 @@
 <h2>Customer List</h2>
 <br>
 <br>
-<h1 class="dashboard-title">Welcome Admin, <%= session.getAttribute("userName") %> </h1>
+<h1 class="dashboard-title">Welcome Manage Customer Page, <%= session.getAttribute("userName") %> </h1>
 <br>
-<a href="customer-form.jsp">Add New Customer</a>
-<a href="customer"> View Customers Info</a>
-<a href="custom"> Update Customer Info</a>
-<a href="admin-db.jsp">Admin Page</a>
+<div class="tabs">
+    <a href="customer-form.jsp" class="tab"> Add New Customer</a>
+    <a href="view-customers.jsp" class="tab"> View Customers Info</a>
+    <a href="update-customer.jsp" class="tab"> Update Customer Info</a>
+    <a href="admin-db.jsp" class="tab"> Admin Page</a>
+</div>
 
+<footer>
+    &copy; 2025 Pahana Edu. All rights reserved.
+</footer>
 </body>
 </html>

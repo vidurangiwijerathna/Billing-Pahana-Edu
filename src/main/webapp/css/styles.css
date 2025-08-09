@@ -1,5 +1,13 @@
 /* styles.css */
-body, html {
+body {
+    /* existing styles... */
+   //* background-image: url('../images/indeximg.jpg '); /* adjust path as needed */
+  //*  background-size: cover;         /* cover entire screen */
+  //*  background-position: center;    /* center the image */
+  //*  background-repeat: no-repeat;   /* don't tile */
+   //* background-attachment: fixed;   /* fixed during scroll */
+}
+ html {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f0f4f8;
     margin: 0;
@@ -251,3 +259,31 @@ footer {
     margin-bottom: 15px;
     font-weight: 600;
 }
+/* customer-list */
+.tabs {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.tab {
+    background-color: #004d99;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 3px 8px rgba(0, 77, 153, 0.3);
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab:hover {
+    background-color: #003366;
+}
+
+

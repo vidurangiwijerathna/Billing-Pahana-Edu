@@ -24,11 +24,14 @@
     <a href="users" class="tab tab-users">Manage Users</a>
     <a href="customer-list.jsp" class="tab tab-customers">Manage Customers</a>
     <a href="item-list.jsp" class="tab tab-items">Manage Items</a>
-    <a href="categories" class="tab tab-categories">Item Categories</a>
+    <a href="category-list.jsp" class="tab tab-categories">Item Categories</a>
     <a href="bills" class="tab tab-bills">Bills</a>
     <a href="Help" class="tab tab-settings">Help</a>
 
 </div>
 
+<footer>
+    &copy; 2025 Pahana Edu. All rights reserved.
+</footer>
 </body>
 </html>
