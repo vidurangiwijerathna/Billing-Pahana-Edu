@@ -37,7 +37,22 @@ public class CustomerServlet extends HttpServlet {
         dto.setAddress(address);
         dto.setAccountNumber(accountNumber);
 
-        customerService.addCustomer(dto);
-        response.sendRedirect("customers");
+        boolean added = customerService.addCustomer(dto);  // Make sure this returns boolean
+
+        // Set success or failure message
+        if (added) {
+            request.setAttribute("message", "Customer added successfully!");
+            request.setAttribute("messageType", "success");
+        } else {
+            request.setAttribute("message", "Failed to add customer.");
+            request.setAttribute("messageType", "error");
+        }
+
+        // Refresh list and forward to customer list page with message
+        List<CustomerDTO> customers = customerService.getAllCustomers();
+        request.setAttribute("customers", customers);
+
+        request.getRequestDispatcher("customer-list.jsp").forward(request, response);
     }
+
 }

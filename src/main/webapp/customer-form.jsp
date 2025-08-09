@@ -17,6 +17,18 @@
     </div>
 </nav>
 
+<%
+    String message = (String) request.getAttribute("message");
+    String messageType = (String) request.getAttribute("messageType");
+    if (message != null) {
+%>
+<div class="<%= "success".equals(messageType) ? "success-message" : "error-message" %>">
+    <%= message %>
+</div>
+<%
+    }
+%>
+
 <h2>Add New Customer</h2>
 <form method="post" action="customers">
     Name: <input type="text" name="name" required><br>
