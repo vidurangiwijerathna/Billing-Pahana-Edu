@@ -21,7 +21,7 @@
 <h1 class="dashboard-title">Welcome Admin, <%= session.getAttribute("userName") %> </h1>
 
 <div class="dashboard">
-    <a href="users" class="tab tab-users">Manage Users</a>
+    <a href="view-users.jsp" class="tab tab-users">Manage Users</a>
     <a href="customer-list.jsp" class="tab tab-customers">Manage Customers</a>
     <a href="item-list.jsp" class="tab tab-items">Manage Items</a>
     <a href="category-list.jsp" class="tab tab-categories">Item Categories</a>

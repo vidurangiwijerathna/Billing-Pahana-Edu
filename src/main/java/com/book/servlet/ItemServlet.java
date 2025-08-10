@@ -58,6 +58,6 @@ public class ItemServlet extends HttpServlet {
             itemService.updateItem(dto);
         }
 
-        resp.sendRedirect("items");
+        resp.sendRedirect("item-list.jsp");
     }
 }

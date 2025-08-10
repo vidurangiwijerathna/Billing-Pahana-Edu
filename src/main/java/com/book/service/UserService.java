@@ -37,6 +37,10 @@ public class UserService {
         return null;
     }
 
+    public List<User> viewAllUsers() {
+        return userDAO.findAll();
+    }
+
     // New method to fetch all users as UserDTO list
     public List<UserDTO> getAllUsers() {
         List<User> users = userDAO.findAll();

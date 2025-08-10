@@ -2,7 +2,8 @@ package com.book.dto;
 
 public class ItemCategoryDTO {
     private Long id;
-    private String name;
+    private String itemId;      // CAT001-style ID
+    private String categoryName;
 
     public Long getId() {
         return id;
@@ -12,11 +13,19 @@ public class ItemCategoryDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

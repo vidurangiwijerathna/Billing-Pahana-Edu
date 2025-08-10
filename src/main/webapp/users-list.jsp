@@ -45,7 +45,10 @@
     </table>
     <a href="admin-db.jsp">Admin Page</a>
 </div>
-
+<br>
+<br>
+<br>
+<br>
 <footer>
     &copy; 2025 Pahana Edu. All rights reserved.
 </footer>

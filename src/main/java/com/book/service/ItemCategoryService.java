@@ -12,10 +12,34 @@ public class ItemCategoryService {
 
     private ItemCategoryDAO dao = new ItemCategoryDAO();
 
+    /**
+     * Generate next itemId like CAT001, CAT002, ...
+     */
+    public String generateNextItemId() {
+        String last = dao.getLastItemId(); // may return null
+        if (last == null) {
+            return "CAT001";
+        }
+        // assume format "CAT###"
+        String numPart = last.replaceAll("[^0-9]", ""); // keep digits
+        int n = 0;
+        try {
+            n = Integer.parseInt(numPart);
+        } catch (NumberFormatException e) {
+            n = 0;
+        }
+        int next = n + 1;
+        return String.format("CAT%03d", next);
+    }
+
     public boolean addCategory(ItemCategoryDTO dto) {
         try {
-            ItemCategory category = ItemCategoryMapper.toEntity(dto);
-            dao.save(category);
+            // create entity, set auto-generated itemId
+            if (dto.getItemId() == null || dto.getItemId().isEmpty()) {
+                dto.setItemId(generateNextItemId());
+            }
+            ItemCategory entity = ItemCategoryMapper.toEntity(dto);
+            dao.save(entity);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -24,15 +48,31 @@ public class ItemCategoryService {
     }
 
     public List<ItemCategoryDTO> getAllCategories() {
-        List<ItemCategory> entities = dao.findAll();
-        return entities.stream()
-                .map(ItemCategoryMapper::toDTO)
-                .collect(Collectors.toList());
+        List<ItemCategory> list = dao.getAll();
+        return list.stream().map(ItemCategoryMapper::toDTO).collect(Collectors.toList());
     }
 
-    public boolean deleteCategory(Long id) {
+    public ItemCategoryDTO getByItemId(String itemId) {
+        ItemCategory entity = dao.findByItemId(itemId);
+        return ItemCategoryMapper.toDTO(entity);
+    }
+
+    public boolean updateCategory(ItemCategoryDTO dto) {
         try {
-            dao.delete(id);
+            ItemCategory existing = dao.findByItemId(dto.getItemId());
+            if (existing == null) return false;
+            existing.setCategoryName(dto.getCategoryName());
+            dao.update(existing);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteCategory(String itemId) {
+        try {
+            dao.deleteByItemId(itemId);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

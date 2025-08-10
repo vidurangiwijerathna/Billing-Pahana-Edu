@@ -1,57 +1,68 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.book.dto.ItemCategoryDTO" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Item Categories</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/styles2.css"> <!-- or styles1.css -->
 </head>
 <body>
 
-<h2>Item Categories</h2>
+<h2 style="text-align:center;">Item Categories</h2>
 
+<!-- messages -->
 <%
     String message = (String) request.getAttribute("message");
     String messageType = (String) request.getAttribute("messageType");
     if (message != null) {
 %>
-<div class="<%= "success".equals(messageType) ? "success-message" : "error-message" %>">
+<div class="<%= "success".equals(messageType) ? "success-message" : "error-message" %>" style="max-width:800px;margin:10px auto;text-align:center;">
     <%= message %>
 </div>
 <%
     }
 %>
 
-<form method="post" action="categories">
-    <label for="name">New Category Name:</label>
-    <input type="text" id="name" name="name" required />
-    <input type="submit" value="Add Category" />
-</form>
+<div style="text-align:center; margin-bottom: 15px;">
+    <a href="category-form.jsp" class="tab"> Add New Category</a>
+    <a href="admin-db.jsp" class="tab"> Admin Page</a>
+</div>
 
-<table border="1" cellpadding="10" cellspacing="0" style="margin-top: 20px;">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%
-        List<com.book.dto.ItemCategoryDTO> categories = (List<com.book.dto.ItemCategoryDTO>) request.getAttribute("categories");
-        if (categories != null) {
-            for (com.book.dto.ItemCategoryDTO cat : categories) {
-    %>
-    <tr>
-        <td><%= cat.getId() %></td>
-        <td><%= cat.getName() %></td>
-    </tr>
-    <%
+<div style="max-width:900px;margin: 0 auto;">
+    <table class="styled-table" style="width:100%;">
+        <thead>
+        <tr>
+            <th>Item ID</th>
+            <th>Category Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+            List<ItemCategoryDTO> categories = (List<ItemCategoryDTO>) request.getAttribute("categories");
+            if (categories != null && !categories.isEmpty()) {
+                for (ItemCategoryDTO c : categories) {
+        %>
+        <tr>
+            <td><%= c.getItemId() %></td>
+            <td><%= c.getCategoryName() %></td>
+            <td>
+                <a href="categories?action=edit&itemId=<%= c.getItemId() %>">Edit</a> |
+                <a href="categories?action=delete&itemId=<%= c.getItemId() %>" onclick="return confirm('Delete this category?');">Delete</a>
+            </td>
+        </tr>
+        <%
             }
-        }
-    %>
-    </tbody>
-</table>
+        } else {
+        %>
+        <tr><td colspan="3" style="text-align:center;">No categories found.</td></tr>
+        <%
+            }
+        %>
+        </tbody>
+    </table>
+</div>
 
-<footer>
-    &copy; 2025 Pahana Edu. All rights reserved.
-</footer>
 </body>
 </html>

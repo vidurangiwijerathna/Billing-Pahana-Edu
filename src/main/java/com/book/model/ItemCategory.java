@@ -10,30 +10,31 @@ public class ItemCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @Column(unique = true)
+    private String itemId; // e.g., CAT001
 
-    // Constructors
-    public ItemCategory() {}
+    @Column(nullable = false)
+    private String categoryName;
 
-    public ItemCategory(String name) {
-        this.name = name;
-    }
-
-    // Getters and setters
+    // Getters & Setters
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getItemId() {
+        return itemId;
+    }
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getCategoryName() {
+        return categoryName;
+    }
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

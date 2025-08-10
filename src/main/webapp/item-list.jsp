@@ -44,6 +44,10 @@
         }
     %>
 </table>
+
+<footer>
+    &copy; 2025 Pahana Edu. All rights reserved.
+</footer>
 </body>
 </html>
 

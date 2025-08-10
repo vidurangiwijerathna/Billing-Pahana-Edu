@@ -37,6 +37,12 @@
     Address: <textarea name="address"></textarea><br>
     Account Number: <input type="text" name="accountNumber" required><br><br>
     <input type="submit" value="Add Customer">
+    <br>
+    <a href="admin-db.jsp" class="tab"> Admin Page</a>
 </form>
+
+<footer>
+    &copy; 2025 Pahana Edu. All rights reserved.
+</footer>
 </body>
 </html>

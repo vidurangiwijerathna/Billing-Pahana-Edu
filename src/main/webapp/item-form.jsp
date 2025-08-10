@@ -27,7 +27,13 @@
     Price: <input type="number" step="0.01" name="price" value="<%= (item != null) ? item.getPrice() : "" %>" required><br>
     Quantity: <input type="number" name="quantity" value="<%= (item != null) ? item.getQuantity() : "" %>" required><br>
     <input type="submit" value="Save">
+    <br>
+    <a href="admin-db.jsp" class="tab"> Admin Page</a>
 </form>
+
+<footer>
+    &copy; 2025 Pahana Edu. All rights reserved.
+</footer>
 </body>
 </html>
 

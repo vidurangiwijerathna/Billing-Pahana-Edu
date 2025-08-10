@@ -35,6 +35,7 @@
 
     <label for="password">Password:</label>
     <input type="password" name="password" id="password" required>
+    <input type="password" id="confirmPassword" placeholder="Enter Confirm Password Here">
 
     <label for="role">Role:</label>
     <select name="role" id="role" required>
