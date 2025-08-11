@@ -4,12 +4,12 @@
 <html>
 <head>
     <title>Manage Items</title>
-    <link rel="stylesheet" href="styles3.css">
+    <link rel="stylesheet" href="css/styles3.css">
 </head>
 <body>
 
 <div class="navbar">
-    <div class="logo">📚 Admin Panel</div>
+    <div class="logo"> Welcome to manage Items page</div>
     <div>
         <a href="index.jsp">Home</a>
         <a href="admin-db.jsp">Admin Page</a>
@@ -19,7 +19,12 @@
 
 <div class="container">
     <h2>Items List</h2>
+    <br>
+    <br>
     <a href="item-form.jsp" class="btn btn-add">Add New Item</a>
+    <br>
+    <br>
+    <br>
 
     <table>
         <thead>

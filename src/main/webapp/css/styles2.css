@@ -1,5 +1,23 @@
 /* style2.css - Styles for Item Category list and form */
+/* Navbar */
+.navbar {
+    background-color: #003360;
+    padding: 15px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 12px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
 /* Container for forms */
 .form-container {
     max-width: 650px;

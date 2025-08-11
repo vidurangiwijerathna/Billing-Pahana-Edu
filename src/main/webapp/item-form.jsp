@@ -5,16 +5,17 @@
 <html>
 <head>
     <title>Add / Edit Item</title>
-    <link rel="stylesheet" href="styles3.css">
+    <link rel="stylesheet" href="css/styles3.css">
 </head>
 <body>
 
 <div class="navbar">
-    <div class="logo"> Admin Panel</div>
+    <div class="logo"> Item Adding Form</div>
     <div>
         <a href="index.jsp">Home</a>
-        <a href="item-form.jsp">Manage Items</a>
+        <a href="item-list.jsp">Manage Items</a>
         <a href="category-list.jsp">Manage Categories</a>
+        <a href="admin-db.jsp" class="tab"> Admin Page</a>
     </div>
 </div>
 
