@@ -4,7 +4,6 @@ import com.book.model.ItemCategory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
@@ -28,33 +27,17 @@ public class ItemCategoryDAO {
     public List<ItemCategory> getAll() {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.createQuery("SELECT c FROM ItemCategory c ORDER BY c.itemId ASC", ItemCategory.class)
+            return em.createQuery("SELECT c FROM ItemCategory c ORDER BY c.id ASC", ItemCategory.class)
                     .getResultList();
         } finally {
             em.close();
         }
     }
 
-    public String getLastItemId() {
+    public ItemCategory findById(Long id) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<String> query = em.createQuery(
-                    "SELECT c.itemId FROM ItemCategory c ORDER BY c.itemId DESC",
-                    String.class
-            );
-            query.setMaxResults(1);
-            List<String> result = query.getResultList();
-            return result.isEmpty() ? null : result.get(0);
-        } finally {
-            em.close();
-        }
-    }
-
-    /** ✅ Added for service usage */
-    public ItemCategory findByItemId(String itemId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return em.find(ItemCategory.class, itemId);
+            return em.find(ItemCategory.class, id);
         } finally {
             em.close();
         }
@@ -74,11 +57,11 @@ public class ItemCategoryDAO {
         }
     }
 
-    public void delete(String itemId) {
+    public void delete(Long id) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            ItemCategory category = em.find(ItemCategory.class, itemId);
+            ItemCategory category = em.find(ItemCategory.class, id);
             if (category != null) {
                 em.remove(category);
             }
@@ -89,10 +72,5 @@ public class ItemCategoryDAO {
         } finally {
             em.close();
         }
-    }
-
-    /** ✅ Added for service usage */
-    public void deleteByItemId(String itemId) {
-        delete(itemId); // reuse the delete method
     }
 }

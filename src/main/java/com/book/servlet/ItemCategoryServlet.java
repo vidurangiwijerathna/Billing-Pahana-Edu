@@ -17,91 +17,45 @@ public class ItemCategoryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // action: list (default), add form, edit form, delete
         String action = request.getParameter("action");
-        if (action == null || action.isEmpty() || action.equals("list")) {
-            List<ItemCategoryDTO> categories = service.getAllCategories();
-            request.setAttribute("categories", categories);
-            request.getRequestDispatcher("category-list.jsp").forward(request, response);
-            return;
-        }
-
-        if (action.equals("add")) {
-            // show empty form (itemId will be generated on submit)
-            request.getRequestDispatcher("category-form.jsp").forward(request, response);
-            return;
-        }
-
-        if (action.equals("edit")) {
-            String itemId = request.getParameter("itemId");
-            if (itemId != null) {
-                ItemCategoryDTO dto = service.getByItemId(itemId);
+        if ("edit".equals(action)) {
+            String idStr = request.getParameter("id");
+            Long id = idStr != null ? Long.parseLong(idStr) : null;
+            if (id != null) {
+                ItemCategoryDTO dto = service.getById(id);
                 request.setAttribute("category", dto);
             }
             request.getRequestDispatcher("category-form.jsp").forward(request, response);
-            return;
-        }
-
-        if (action.equals("delete")) {
-            String itemId = request.getParameter("itemId");
-            boolean deleted = false;
-            if (itemId != null) deleted = service.deleteCategory(itemId);
-            // set message and reload list
-            if (deleted) {
-                request.setAttribute("message", "Category deleted successfully.");
-                request.setAttribute("messageType", "success");
-            } else {
-                request.setAttribute("message", "Failed to delete category.");
-                request.setAttribute("messageType", "error");
+        } else if ("delete".equals(action)) {
+            String idStr = request.getParameter("id");
+            Long id = idStr != null ? Long.parseLong(idStr) : null;
+            if (id != null) {
+                service.deleteCategory(id);
             }
+            response.sendRedirect("categories");
+        } else {
             List<ItemCategoryDTO> categories = service.getAllCategories();
             request.setAttribute("categories", categories);
             request.getRequestDispatcher("category-list.jsp").forward(request, response);
-            return;
         }
-
-        // fallback list
-        List<ItemCategoryDTO> categories = service.getAllCategories();
-        request.setAttribute("categories", categories);
-        request.getRequestDispatcher("category-list.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Determine if this is Add or Update by presence of itemId hidden field
-        String itemId = request.getParameter("itemId");
+        String idStr = request.getParameter("id");
         String categoryName = request.getParameter("categoryName");
 
         ItemCategoryDTO dto = new ItemCategoryDTO();
         dto.setCategoryName(categoryName);
 
-        boolean ok;
-        if (itemId == null || itemId.trim().isEmpty()) {
-            // Add new
-            ok = service.addCategory(dto);
-            if (ok) {
-                request.setAttribute("message", "Category added successfully.");
-                request.setAttribute("messageType", "success");
-            } else {
-                request.setAttribute("message", "Failed to add category.");
-                request.setAttribute("messageType", "error");
-            }
+        if (idStr == null || idStr.isEmpty()) {
+            // Add new category
+            service.addCategory(dto);
         } else {
             // Update existing
-            dto.setItemId(itemId);
-            ok = service.updateCategory(dto);
-            if (ok) {
-                request.setAttribute("message", "Category updated successfully.");
-                request.setAttribute("messageType", "success");
-            } else {
-                request.setAttribute("message", "Failed to update category.");
-                request.setAttribute("messageType", "error");
-            }
+            dto.setId(Long.parseLong(idStr));
+            service.updateCategory(dto);
         }
-
-        // reload list and forward
-        List<ItemCategoryDTO> categories = service.getAllCategories();
-        request.setAttribute("categories", categories);
-        request.getRequestDispatcher("category-list.jsp").forward(request, response);
+        response.sendRedirect("categories");
     }
 }

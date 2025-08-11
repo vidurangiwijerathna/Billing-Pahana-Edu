@@ -10,26 +10,26 @@
 
 <%
     ItemCategoryDTO category = (ItemCategoryDTO) request.getAttribute("category");
-    boolean editing = (category != null && category.getItemId() != null);
+    boolean editing = (category != null && category.getId() != null);
 %>
 
 <h2 style="text-align:center;"><%= editing ? "Edit Category" : "Add New Category" %></h2>
 
-<div style="max-width:600px;margin:20px auto; background:white; padding:20px; border-radius:8px;">
-    <form method="post" action="categories">
-        <% if (editing) { %>
-        <input type="hidden" name="itemId" value="<%= category.getItemId() %>">
-        <p><strong>Item ID: </strong> <%= category.getItemId() %></p>
-        <% } %>
+<form method="post" action="categories" style="max-width:600px; margin: 20px auto; background:#fff; padding:20px; border-radius:8px;">
+    <% if (editing) { %>
+    <input type="hidden" name="id" value="<%= category.getId() %>">
+    <p><strong>ID: </strong> <%= category.getId() %></p>
+    <% } %>
 
-        <label for="categoryName">Category Name</label><br>
-        <input type="text" id="categoryName" name="categoryName" required
-               value="<%= editing ? category.getCategoryName() : "" %>" style="width:100%;padding:8px;margin-bottom:12px;">
+    <label for="categoryName">Category Name</label><br>
+    <input type="text" id="categoryName" name="categoryName" required
+           value="<%= editing ? category.getCategoryName() : "" %>">
 
-        <input type="submit" value="<%= editing ? "Update Category" : "Add Category" %>" style="padding:10px 18px;">
-        <a href="categories" style="margin-left:12px;">Back</a>
-    </form>
-</div>
-
+    <input type="submit" value="<%= editing ? "Update Category" : "Add Category" %>">
+    <a href="admin-db.jsp" class="tab"> Admin Page</a>
+</form>
+<footer>
+    &copy; 2025 Pahana Edu. All rights reserved.
+</footer>
 </body>
 </html>

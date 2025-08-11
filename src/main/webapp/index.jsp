@@ -9,7 +9,7 @@
 
 <nav>
     <div class="nav-left">
-        <a href="#home-section">Home</a>
+        <a href="index.jsp">Home</a>
         <a href="#about-section">About</a>
         <a href="help.jsp">Help</a>
     </div>

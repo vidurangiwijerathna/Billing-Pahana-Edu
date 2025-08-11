@@ -5,64 +5,53 @@
 <html>
 <head>
     <title>Item Categories</title>
-    <link rel="stylesheet" href="css/styles2.css"> <!-- or styles1.css -->
+    <link rel="stylesheet" href="css/styles2.css">
 </head>
 <body>
+<nav>
+    <div class="nav-left">
+        <a href="index.jsp">Home</a>
+        <a href="index.jsp">About</a>
+        <a href="help.jsp">Help</a>
+    </div>
+    <div class="nav-right">
+        <a href="logout.jsp">Logout</a>
+    </div>
+</nav>
+<h2>Item Categories</h2>
+<a href="category-form.jsp">Add New Category</a>
+<a href="admin-db.jsp" class="tab"> Admin Page</a>
 
-<h2 style="text-align:center;">Item Categories</h2>
+<table border="1" cellpadding="8" cellspacing="0" style="width:80%; margin:20px auto;">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Category Name</th>
 
-<!-- messages -->
-<%
-    String message = (String) request.getAttribute("message");
-    String messageType = (String) request.getAttribute("messageType");
-    if (message != null) {
-%>
-<div class="<%= "success".equals(messageType) ? "success-message" : "error-message" %>" style="max-width:800px;margin:10px auto;text-align:center;">
-    <%= message %>
-</div>
-<%
-    }
-%>
-
-<div style="text-align:center; margin-bottom: 15px;">
-    <a href="category-form.jsp" class="tab"> Add New Category</a>
-    <a href="admin-db.jsp" class="tab"> Admin Page</a>
-</div>
-
-<div style="max-width:900px;margin: 0 auto;">
-    <table class="styled-table" style="width:100%;">
-        <thead>
-        <tr>
-            <th>Item ID</th>
-            <th>Category Name</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <%
-            List<ItemCategoryDTO> categories = (List<ItemCategoryDTO>) request.getAttribute("categories");
-            if (categories != null && !categories.isEmpty()) {
-                for (ItemCategoryDTO c : categories) {
-        %>
-        <tr>
-            <td><%= c.getItemId() %></td>
-            <td><%= c.getCategoryName() %></td>
-            <td>
-                <a href="categories?action=edit&itemId=<%= c.getItemId() %>">Edit</a> |
-                <a href="categories?action=delete&itemId=<%= c.getItemId() %>" onclick="return confirm('Delete this category?');">Delete</a>
-            </td>
-        </tr>
-        <%
+    </tr>
+    </thead>
+    <tbody>
+    <%
+        List<ItemCategoryDTO> categories = (List<ItemCategoryDTO>) request.getAttribute("categories");
+        if (categories != null) {
+            for (ItemCategoryDTO cat : categories) {
+    %>
+    <tr>
+        <td><%= cat.getId() %></td>
+        <td><%= cat.getCategoryName() %></td>
+        <td>
+            <a href="categories?action=edit&id=<%= cat.getId() %>">Edit</a> |
+            <a href="categories?action=delete&id=<%= cat.getId() %>" onclick="return confirm('Are you sure?')">Delete</a>
+        </td>
+    </tr>
+    <%
             }
-        } else {
-        %>
-        <tr><td colspan="3" style="text-align:center;">No categories found.</td></tr>
-        <%
-            }
-        %>
-        </tbody>
-    </table>
-</div>
-
+        }
+    %>
+    </tbody>
+</table>
+<footer>
+    &copy; 2025 Pahana Edu. All rights reserved.
+</footer>
 </body>
 </html>

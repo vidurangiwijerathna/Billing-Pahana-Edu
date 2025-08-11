@@ -1,40 +1,57 @@
 package com.book.service;
 
 import com.book.dao.ItemDAO;
+import com.book.dao.ItemCategoryDAO;
 import com.book.dto.ItemDTO;
 import com.book.mapper.ItemMapper;
 import com.book.model.Item;
+import com.book.model.ItemCategory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ItemService {
 
-    private ItemDAO itemDAO = new ItemDAO();
+    private final ItemDAO itemDAO = new ItemDAO();
+    private final ItemCategoryDAO categoryDAO = new ItemCategoryDAO();
 
-    public void createItem(ItemDTO dto) {
-        Item item = ItemMapper.toEntity(dto);
-        itemDAO.save(item);
-    }
-
-    public ItemDTO getItem(Long id) {
-        Item item = itemDAO.findById(id);
-        return item != null ? ItemMapper.toDTO(item) : null;
+    public boolean addItem(ItemDTO dto) {
+        try {
+            ItemCategory category = categoryDAO.findById(dto.getCategoryId());
+            Item entity = ItemMapper.toEntity(dto, category);
+            itemDAO.save(entity);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public List<ItemDTO> getAllItems() {
-        return itemDAO.findAll()
-                .stream()
-                .map(ItemMapper::toDTO)
-                .collect(Collectors.toList());
+        return itemDAO.getAll().stream().map(ItemMapper::toDTO).collect(Collectors.toList());
     }
 
-    public void updateItem(ItemDTO dto) {
-        Item item = ItemMapper.toEntity(dto);
-        itemDAO.update(item);
+    public ItemDTO getItemById(Long id) {
+        return ItemMapper.toDTO(itemDAO.findById(id));
     }
 
-    public void deleteItem(Long id) {
-        itemDAO.delete(id);
+    public boolean updateItem(ItemDTO dto) {
+        try {
+            ItemCategory category = categoryDAO.findById(dto.getCategoryId());
+            Item entity = ItemMapper.toEntity(dto, category);
+            itemDAO.update(entity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean deleteItem(Long id) {
+        try {
+            itemDAO.delete(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

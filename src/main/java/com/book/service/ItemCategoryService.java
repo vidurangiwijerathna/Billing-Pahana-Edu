@@ -12,32 +12,8 @@ public class ItemCategoryService {
 
     private ItemCategoryDAO dao = new ItemCategoryDAO();
 
-    /**
-     * Generate next itemId like CAT001, CAT002, ...
-     */
-    public String generateNextItemId() {
-        String last = dao.getLastItemId(); // may return null
-        if (last == null) {
-            return "CAT001";
-        }
-        // assume format "CAT###"
-        String numPart = last.replaceAll("[^0-9]", ""); // keep digits
-        int n = 0;
-        try {
-            n = Integer.parseInt(numPart);
-        } catch (NumberFormatException e) {
-            n = 0;
-        }
-        int next = n + 1;
-        return String.format("CAT%03d", next);
-    }
-
     public boolean addCategory(ItemCategoryDTO dto) {
         try {
-            // create entity, set auto-generated itemId
-            if (dto.getItemId() == null || dto.getItemId().isEmpty()) {
-                dto.setItemId(generateNextItemId());
-            }
             ItemCategory entity = ItemCategoryMapper.toEntity(dto);
             dao.save(entity);
             return true;
@@ -52,14 +28,14 @@ public class ItemCategoryService {
         return list.stream().map(ItemCategoryMapper::toDTO).collect(Collectors.toList());
     }
 
-    public ItemCategoryDTO getByItemId(String itemId) {
-        ItemCategory entity = dao.findByItemId(itemId);
+    public ItemCategoryDTO getById(Long id) {
+        ItemCategory entity = dao.findById(id);
         return ItemCategoryMapper.toDTO(entity);
     }
 
     public boolean updateCategory(ItemCategoryDTO dto) {
         try {
-            ItemCategory existing = dao.findByItemId(dto.getItemId());
+            ItemCategory existing = dao.findById(dto.getId());
             if (existing == null) return false;
             existing.setCategoryName(dto.getCategoryName());
             dao.update(existing);
@@ -70,9 +46,9 @@ public class ItemCategoryService {
         }
     }
 
-    public boolean deleteCategory(String itemId) {
+    public boolean deleteCategory(Long id) {
         try {
-            dao.deleteByItemId(itemId);
+            dao.delete(id);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
