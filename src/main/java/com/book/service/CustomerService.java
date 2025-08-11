@@ -33,4 +33,8 @@ public class CustomerService {
         // your existing method
         return null; // placeholder
     }
+
+    public List<Customer> viewAllCustomers() {
+        return customerDAO.findAll();
+    }
 }

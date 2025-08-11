@@ -21,11 +21,11 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Account Number</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
             <th>Address</th>
+            <th>Account Number</th>
         </tr>
         </thead>
         <tbody>
@@ -36,7 +36,7 @@
 
 <!-- Fetch Customers from API -->
 <script>
-    fetch('api/customer')
+    fetch('/api/viewCustomer')
         .then(response => response.json())
         .then(customers => {
             const tbody = document.getElementById('customersTable').getElementsByTagName('tbody')[0];
@@ -51,11 +51,11 @@
                 customers.forEach(customer => {
                     const row = tbody.insertRow();
                     row.insertCell(0).textContent = customer.id;
-                    row.insertCell(4).textContent = customer.account_number;
-                    row.insertCell(4).textContent = customer.address;
-                    row.insertCell(2).textContent = customer.email;
                     row.insertCell(1).textContent = customer.name;
+                    row.insertCell(2).textContent = customer.email;
                     row.insertCell(3).textContent = customer.phone;
+                    row.insertCell(4).textContent = customer.address;
+                    row.insertCell(5).textContent = customer.account_number;
 
                 });
             }

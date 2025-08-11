@@ -1,13 +1,7 @@
 /* styles.css */
-body {
-    /* existing styles... */
-   //* background-image: url('../images/indeximg.jpg '); /* adjust path as needed */
-  //*  background-size: cover;         /* cover entire screen */
-  //*  background-position: center;    /* center the image */
-  //*  background-repeat: no-repeat;   /* don't tile */
-   //* background-attachment: fixed;   /* fixed during scroll */
-}
- html {
+
+/* ===== Reset & Base ===== */
+html, body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: whitesmoke;
     margin: 0;
@@ -16,34 +10,51 @@ body {
     scroll-behavior: smooth;
 }
 
+/* ===== Navigation Bar ===== */
+nav {
+    background-color: #002B5B; /* Dark Blue */
+    padding: 20px 30px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
 
 nav a {
     color: white;
     text-decoration: none;
     font-weight: 600;
-    padding: 6px 12px;
+    padding: 8px 20px;
     border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 nav a:hover {
     background-color: #0066cc;
 }
 
+/* ===== Form Container ===== */
 .container {
     max-width: 400px;
     background: white;
-    margin: 50px auto;
+    margin: 100px auto 50px auto; /* space for fixed nav */
     padding: 30px 40px;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
+/* ===== Headings ===== */
 h2 {
     text-align: center;
     color: #003366;
     margin-bottom: 25px;
 }
 
+/* ===== Form Elements ===== */
 form label {
     display: block;
     margin-bottom: 6px;
@@ -64,9 +75,7 @@ form select {
     transition: border-color 0.3s;
 }
 
-form input[type="text"]:focus,
-form input[type="email"]:focus,
-form input[type="password"]:focus,
+form input:focus,
 form select:focus {
     border-color: #004d99;
     outline: none;
@@ -89,6 +98,7 @@ form input[type="submit"]:hover {
     background-color: #003366;
 }
 
+/* ===== Messages ===== */
 .error-message {
     color: #cc0000;
     text-align: center;
@@ -103,6 +113,7 @@ form input[type="submit"]:hover {
     font-weight: 600;
 }
 
+/* ===== Footer ===== */
 footer {
     text-align: center;
     padding: 15px 0;
@@ -111,8 +122,7 @@ footer {
     margin-top: 50px;
 }
 
-/* ======= Admin Dashboard Tabs ======= */
-
+/* ===== Dashboard Tabs ===== */
 .dashboard {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -124,7 +134,7 @@ footer {
 
 .tab {
     border-radius: 12px;
-    padding: 40px 20px;
+    padding: 10px 20px;
     text-align: center;
     font-size: 20px;
     font-weight: 700;
@@ -145,40 +155,19 @@ footer {
     margin-bottom: 15px;
 }
 
-/* Colorful tabs */
-.tab-users {
-    background-color: #2E86C1; /* blue */
-}
-
-.tab-customers {
-    background-color: #28B463; /* green */
-}
-
-.tab-items {
-    background-color: #E67E22; /* orange */
-}
-
-.tab-categories {
-    background-color: #8E44AD; /* purple */
-}
-
-.tab-bills {
-    background-color: #CA6F1E; /* dark orange */
-}
-
-
-
-.tab-settings {
-    background-color: #C0392B; /* dark slate */
-}
-
+.tab-users { background-color: #003366; }
+.tab-customers { background-color: #003366; }
+.tab-items { background-color: #003366; }
+.tab-categories { background-color: #003366; }
+.tab-bills { background-color: #003366; }
+.tab-settings { background-color:#003366; }
 
 .tab:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 24px rgba(0,0,0,0.25);
 }
 
-/* Full viewport height sections */
+/* ===== Full Page Sections ===== */
 .fullpage-section {
     height: 100vh;
     display: flex;
@@ -188,16 +177,14 @@ footer {
     box-sizing: border-box;
 }
 
-/* Home section background & text */
 .home-section {
     background: #f0f4f8;
     color: #004d99;
-    padding-top: 60px; /* For fixed nav offset */
+    padding-top: 60px;
     flex-direction: column;
     text-align: center;
 }
 
-/* About section background & text */
 .about-section {
     background: white;
     color: #333;
@@ -224,24 +211,7 @@ footer {
     max-width: 700px;
 }
 
-/* Adjust container margin for fixed nav */
-.container {
-    margin-top: 100px;
-}
-.success-message {
-    color: #007a00;
-    text-align: center;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-.error-message {
-    color: #cc0000;
-    text-align: center;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-/* customer-list */
+/* ===== Customer List Tabs ===== */
 .tabs {
     display: flex;
     gap: 15px;
@@ -249,7 +219,7 @@ footer {
     margin: 30px 0;
 }
 
-.tab {
+.tabs .tab {
     background-color: #004d99;
     color: white;
     padding: 12px 20px;
@@ -264,8 +234,6 @@ footer {
     gap: 8px;
 }
 
-.tab:hover {
+.tabs .tab:hover {
     background-color: #003366;
 }
-
-

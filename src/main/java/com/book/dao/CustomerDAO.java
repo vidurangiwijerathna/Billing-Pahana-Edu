@@ -1,6 +1,7 @@
 package com.book.dao;
 
 import com.book.model.Customer;
+import com.book.model.User;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -26,12 +27,12 @@ public class CustomerDAO {
 
     public List<Customer> findAll() {
         EntityManager em = emf.createEntityManager();
-        try {
+
             return em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList();
-        } finally {
-            em.close();
-        }
+
     }
+
+
 
     public Customer findById(Long id) {
         EntityManager em = emf.createEntityManager();

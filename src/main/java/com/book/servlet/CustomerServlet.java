@@ -16,13 +16,6 @@ public class CustomerServlet extends HttpServlet {
     private CustomerService customerService = new CustomerService();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<CustomerDTO> customers = customerService.getAllCustomers();
-        request.setAttribute("customers", customers);
-        request.getRequestDispatcher("customer-list.jsp").forward(request, response);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
