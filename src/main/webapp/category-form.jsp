@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Category Form</title>
-    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="stylesheet" href="css/styles3.css">
 </head>
 <body>
 

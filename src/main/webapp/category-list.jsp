@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>Item Categories</title>
-    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="stylesheet" href="css/styles3.css">
 </head>
 <body>
 <nav>

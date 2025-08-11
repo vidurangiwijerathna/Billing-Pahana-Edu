@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ItemDAO {
 
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPU");
 
     public void save(Item item) {
         EntityManager em = emf.createEntityManager();

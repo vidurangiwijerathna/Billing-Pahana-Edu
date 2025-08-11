@@ -9,32 +9,14 @@ body {
 }
  html {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f4f8;
+    background: whitesmoke;
     margin: 0;
     padding: 0;
     height: 100%;
     scroll-behavior: smooth;
 }
 
-/* Navbar */
-.navbar {
-    background-color: #003360;
-    padding: 15px 20px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-.navbar a {
-    color: white;
-    text-decoration: none;
-    margin: 0 12px;
-}
-
-.navbar a:hover {
-    text-decoration: underline;
-}
 nav a {
     color: white;
     text-decoration: none;
@@ -58,7 +40,7 @@ nav a:hover {
 
 h2 {
     text-align: center;
-    color: #004d99;
+    color: #003366;
     margin-bottom: 25px;
 }
 

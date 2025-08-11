@@ -77,6 +77,6 @@ public class ItemServlet extends HttpServlet {
             itemService.updateItem(dto);
         }
 
-        response.sendRedirect("items");
+        response.sendRedirect("admin-db.jsp");
     }
 }

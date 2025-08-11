@@ -8,7 +8,7 @@ import jakarta.persistence.Persistence;
 import java.util.List;
 
 public class ItemCategoryDAO {
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPU");
 
     public void save(ItemCategory category) {
         EntityManager em = emf.createEntityManager();
@@ -26,12 +26,10 @@ public class ItemCategoryDAO {
 
     public List<ItemCategory> getAll() {
         EntityManager em = emf.createEntityManager();
-        try {
-            return em.createQuery("SELECT c FROM ItemCategory c ORDER BY c.id ASC", ItemCategory.class)
+
+            return em.createQuery("SELECT c FROM ItemCategory c", ItemCategory.class)
                     .getResultList();
-        } finally {
-            em.close();
-        }
+
     }
 
     public ItemCategory findById(Long id) {

@@ -8,24 +8,21 @@ import com.book.model.ItemCategory;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.book.mapper.ItemCategoryMapper.toEntity;
+
 public class ItemCategoryService {
 
     private ItemCategoryDAO dao = new ItemCategoryDAO();
 
-    public boolean addCategory(ItemCategoryDTO dto) {
-        try {
-            ItemCategory entity = ItemCategoryMapper.toEntity(dto);
-            dao.save(entity);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void addCategory(ItemCategoryDTO dto) {
+        ItemCategory category = toEntity(dto);
+        dao.save(category);
     }
 
-    public List<ItemCategoryDTO> getAllCategories() {
-        List<ItemCategory> list = dao.getAll();
-        return list.stream().map(ItemCategoryMapper::toDTO).collect(Collectors.toList());
+
+
+    public List<ItemCategory> getAllCategories() {
+        return dao.getAll();
     }
 
     public ItemCategoryDTO getById(Long id) {

@@ -38,7 +38,8 @@
     Account Number: <input type="text" name="accountNumber" required><br><br>
     <input type="submit" value="Add Customer">
     <br>
-    <a href="admin-db.jsp" class="tab"> Admin Page</a>
+    <br>
+    <a href="customer-list.jsp" class="tab"> Customer List </a>
 </form>
 
 <footer>
