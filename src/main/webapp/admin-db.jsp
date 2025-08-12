@@ -25,7 +25,8 @@
     <a href="customer-list.jsp" class="tab tab-customers">Manage Customers</a>
     <a href="item-list.jsp" class="tab tab-items">Manage Items</a>
     <a href="category-list.jsp" class="tab tab-categories">Item Categories</a>
-    <a href="bills" class="tab tab-bills">Bills</a>
+    <a href="bills" class="bills-list.jsp">Manage Bills</a>
+    <a href="bill-item" class="tab tab-settings">Manage Bill Items</a>
     <a href="Help" class="tab tab-settings">Help</a>
 
 </div>

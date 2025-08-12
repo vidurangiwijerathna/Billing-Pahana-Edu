@@ -3,7 +3,8 @@
 /* ===== Reset & Base ===== */
 html, body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: whitesmoke;
+    background: url("/css/images/indeximg.jpg") no-repeat center center fixed;
+    background-size: cover;
     margin: 0;
     padding: 0;
     height: 100%;
@@ -160,6 +161,8 @@ footer {
 .tab-items { background-color: #003366; }
 .tab-categories { background-color: #003366; }
 .tab-bills { background-color: #003366; }
+.tab-billItems { background-color: #003366; }
+.tab-createbills { background-color: #003366; }
 .tab-settings { background-color:#003366; }
 
 .tab:hover {

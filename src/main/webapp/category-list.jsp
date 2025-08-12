@@ -5,22 +5,22 @@
 <html>
 <head>
     <title>Item Categories</title>
-    <link rel="stylesheet" href="css/styles3.css">
+    <link rel="stylesheet" href="css/styles4.css">
 </head>
 <body>
 <nav>
-    <div class="nav-left">
-        <a href="index.jsp">Home</a>
-        <a href="index.jsp">About</a>
-        <a href="help.jsp">Help</a>
-    </div>
-    <div class="nav-right">
-        <a href="logout.jsp">Logout</a>
+    <div class="navbar">
+        <div class="logo"> Welcome to Item Categories page</div>
+        <div>
+            <a href="index.jsp">Home</a>
+            <a href="admin-db.jsp">Admin Page</a>
+            <a href="category-list.jsp">Manage Category</a>
+        </div>
     </div>
 </nav>
 <h2>Item Categories</h2>
 <a href="category-form.jsp">Add New Category</a>
-<a href="admin-db.jsp" class="tab"> Admin Page</a>
+
 
 <table border="1" cellpadding="8" cellspacing="0" style="width:80%; margin:20px auto;">
     <thead>

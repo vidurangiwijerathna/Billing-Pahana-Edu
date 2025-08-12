@@ -1,0 +1,115 @@
+/* styles5.css - clean and simple for bills & forms */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8fafc;
+    color: #222;
+    margin: 20px;
+}
+
+h2, h3 {
+    color: #1f2937;
+}
+
+a {
+    color: #0b5ed7;
+    text-decoration: none;
+    margin-right: 8px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Form */
+form {
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(16,24,40,0.05);
+    max-width: 900px;
+}
+
+label {
+    display: block;
+    margin: 8px 0 4px;
+    font-weight: 600;
+}
+
+select, input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+button {
+    background: #0b5ed7;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button[type="button"] {
+    background: #6c757d;
+}
+
+button:hover {
+    opacity: 0.95;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+table thead {
+    background: #eef2ff;
+}
+
+table th, table td {
+    padding: 10px;
+    border-bottom: 1px solid #e6e6e6;
+    text-align: left;
+}
+
+.item-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.item-row select, .item-row input[type="number"] {
+    width: auto;
+    min-width: 200px;
+}
+
+a.btn {
+    display: inline-block;
+    background: #0b5ed7;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+/* small responsive */
+@media (max-width: 700px) {
+    .item-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    table th, table td {
+        font-size: 14px;
+    }
+}

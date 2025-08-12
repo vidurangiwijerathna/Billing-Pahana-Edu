@@ -2,12 +2,20 @@
 <%@ page import="com.book.dto.ItemCategoryDTO" %>
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Category Form</title>
-    <link rel="stylesheet" href="css/styles3.css">
+<title>Add Categories</title>
+<link rel="stylesheet" href="css/styles2.css">
+
 </head>
 <body>
 
+<div class="navbar">
+    <div class="logo"> Welcome to Add Categories page</div>
+    <div>
+        <a href="index.jsp">Home</a>
+        <a href="admin-db.jsp">Admin Page</a>
+        <a href="category-list.jsp">Manage Category</a>
+    </div>
+</div>
 <%
     ItemCategoryDTO category = (ItemCategoryDTO) request.getAttribute("category");
     boolean editing = (category != null && category.getId() != null);
@@ -26,7 +34,7 @@
            value="<%= editing ? category.getCategoryName() : "" %>">
 
     <input type="submit" value="<%= editing ? "Update Category" : "Add Category" %>">
-    <a href="admin-db.jsp" class="tab"> Admin Page</a>
+    <a href="item-list.jsp" class="tab"> Item Page</a>
 </form>
 <footer>
     &copy; 2025 Pahana Edu. All rights reserved.
