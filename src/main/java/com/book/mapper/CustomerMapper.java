@@ -6,16 +6,18 @@ import com.book.model.Customer;
 public class CustomerMapper {
 
     // Entity -> DTO
+
+
     public static CustomerDTO toDTO(Customer customer) {
-        if (customer == null) return null;
-        CustomerDTO dto = new CustomerDTO();
-        dto.setId(customer.getId());
-        dto.setName(customer.getName());
-        dto.setEmail(customer.getEmail());
-        dto.setPhone(customer.getPhone());
-        dto.setAddress(customer.getAddress());
-        dto.setAccountNumber(customer.getAccountNumber());
-        return dto;
+        return new CustomerDTO(
+                customer.getId(),
+                customer.getName(),
+                customer.getEmail(),
+                customer.getPhone(),
+                customer.getAddress(),
+                customer.getAccountNumber(),
+                customer.getCreatedAt()
+        );
     }
 
     // DTO -> Entity
@@ -28,6 +30,7 @@ public class CustomerMapper {
         customer.setPhone(dto.getPhone());
         customer.setAddress(dto.getAddress());
         customer.setAccountNumber(dto.getAccountNumber());
+        customer.setCreatedAt(dto.getCreatedAt()); // NEW
         return customer;
     }
 }

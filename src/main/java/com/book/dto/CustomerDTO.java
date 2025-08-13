@@ -1,5 +1,8 @@
 package com.book.dto;
 
+import java.time.LocalDateTime;
+import java.time.LocalDateTime;
+
 public class CustomerDTO {
     private Long id;
     private String name;
@@ -7,6 +10,10 @@ public class CustomerDTO {
     private String phone;
     private String address;
     private String accountNumber;
+    private LocalDateTime createdAt; // NEW
+
+    public CustomerDTO(Long id, String name, String email, String phone, String address, String accountNumber, LocalDateTime createdAt) {
+    }
 
     // Getters & Setters
     public Long getId() { return id; }
@@ -26,4 +33,7 @@ public class CustomerDTO {
 
     public String getAccountNumber() { return accountNumber; }
     public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

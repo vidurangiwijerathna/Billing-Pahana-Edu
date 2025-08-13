@@ -1,7 +1,7 @@
 package com.book.model;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "customer")
@@ -20,11 +20,11 @@ public class Customer {
 
     private String address;
 
-    @Column(name = "account_number", unique = true, nullable = false)
+    @Column(name = "account_number", unique = true)
     private String accountNumber;
 
     @Column(name = "created_at")
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     // Getters & Setters
     public Long getId() { return id; }
@@ -45,6 +45,6 @@ public class Customer {
     public String getAccountNumber() { return accountNumber; }
     public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
 
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

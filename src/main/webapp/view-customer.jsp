@@ -26,6 +26,7 @@
             <th>Phone</th>
             <th>Address</th>
             <th>Account Number</th>
+            <th>Created At</th>
         </tr>
         </thead>
         <tbody>
@@ -36,14 +37,14 @@
 
 <!-- Fetch Customers from API -->
 <script>
-    fetch('/api/viewCustomer')
+    fetch('/api/customer')
         .then(response => response.json())
         .then(customers => {
             const tbody = document.getElementById('customersTable').getElementsByTagName('tbody')[0];
             if (customers.length === 0) {
                 const row = tbody.insertRow();
                 const cell = row.insertCell(0);
-                cell.colSpan = 6;
+                cell.colSpan = 7; // updated for new column
                 cell.textContent = "No customers found";
                 cell.style.textAlign = "center";
                 cell.style.fontStyle = "italic";
@@ -56,7 +57,7 @@
                     row.insertCell(3).textContent = customer.phone;
                     row.insertCell(4).textContent = customer.address;
                     row.insertCell(5).textContent = customer.account_number;
-
+                    row.insertCell(6).textContent = customer.created_at || 'N/A';
                 });
             }
         })
