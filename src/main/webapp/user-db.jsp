@@ -25,8 +25,8 @@
     <a href="customer-list-cash.jsp" class="tab tab-customers">Manage Customers</a>
     <a href="item-" class="tab tab-items">View  Items</a>
     <a href="category-" class="tab tab-categories">view Categories</a>
-    <a href="bills" class="bills-list.jsp">Manage Bills</a>
-    <a href="bill-item" class="tab tab-settings">Manage Bill Items</a>
+    <a href="bills" class="tab tab-settings">Manage Bill Items</a>
+    <a href="bill-item" class="tab tab-settings">Manage Bill </a>
 
 
 </div>

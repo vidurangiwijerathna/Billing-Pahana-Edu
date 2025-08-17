@@ -84,16 +84,16 @@ nav a:hover {
 .tab-customers { background: linear-gradient(135deg, #11998e, #38ef7d); }
 .tab-items { background: linear-gradient(135deg, #ff512f, #dd2476); }
 .tab-categories { background: linear-gradient(135deg, #ff9966, #ff5e62); }
-.tab-bills { background: linear-gradient(135deg, #654ea3, #eaafc8); }
-.tab-settings { background: linear-gradient(135deg, #f7971e, #ffd200); }
+.tab-bill { background: linear-gradient(135deg, #654ea3, #eaafc8); }
+.tab-bill-item { background: linear-gradient(135deg, #f7971e, #ffd200); }
+
 
 /* ===== Footer ===== */
 footer {
     text-align: center;
     padding: 18px 0;
-    color: #eee;
+    color: black;
     font-size: 0.9rem;
-    background: rgba(0, 43, 91, 0.95);
     position: fixed;
     bottom: 0;
     width: 100%;
