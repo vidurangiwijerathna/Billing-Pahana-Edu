@@ -42,7 +42,7 @@ nav a:hover {
 /* ===== Form Container ===== */
 .container {
     max-width: 400px;
-    background: white;
+    background: lightsalmon;
     margin: 100px auto 50px auto; /* space for fixed nav */
     padding: 30px 40px;
     border-radius: 8px;
@@ -191,7 +191,7 @@ footer {
 }
 
 .about-section {
-    background: lightsalmon;
+    background:white ;
     color: #333;
     flex-direction: column;
     text-align: center;

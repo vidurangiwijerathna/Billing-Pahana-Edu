@@ -1,0 +1,100 @@
+
+/* ===== Reset & Base ===== */
+html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url("images/customer.jpg") no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* ===== Navigation Bar ===== */
+nav {
+    background-color: rgba(0, 43, 91, 0.95);
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 12px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+nav a:hover {
+    background-color: #0066cc;
+    transform: translateY(-2px);
+}
+
+/* ===== Dashboard Title ===== */
+.dashboard-title {
+    margin-top: 100px; /* space for nav */
+    text-align: center;
+    color: #003366;
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+/* ===== Dashboard Grid ===== */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    max-width: 1000px;
+    margin: 40px auto 80px auto;
+    padding: 0 20px;
+}
+
+/* ===== Dashboard Tabs ===== */
+.tab {
+    border-radius: 14px;
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: linear-gradient(135deg, #003366, #0066cc);
+}
+
+.tab:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+}
+
+/* Different Colors for Sections (optional) */
+.tab-users { background: linear-gradient(135deg, #1e3c72, #2a5298); }
+.tab-customers { background: linear-gradient(135deg, #11998e, #38ef7d); }
+.tab-items { background: linear-gradient(135deg, #ff512f, #dd2476); }
+.tab-categories { background: linear-gradient(135deg, #ff9966, #ff5e62); }
+.tab-bills { background: linear-gradient(135deg, #654ea3, #eaafc8); }
+.tab-settings { background: linear-gradient(135deg, #f7971e, #ffd200); }
+
+/* ===== Footer ===== */
+footer {
+    text-align: center;
+    padding: 18px 0;
+    color: #eee;
+    font-size: 0.9rem;
+    background: rgba(0, 43, 91, 0.95);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

@@ -1,11 +1,11 @@
 /* styles5.css - clean and simple for bills & forms */
 body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: #f8fafc;
-    color: #222;
-    margin: 20px;
+    font-family: Arial, sans-serif;
+    background: url("images/admin.jpg") no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
 }
-
 h2, h3 {
     color: #1f2937;
 }

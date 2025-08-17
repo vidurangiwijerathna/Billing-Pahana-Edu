@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Cahsier Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/cshstyles.css">
 </head>
 <body>
 <nav>
@@ -22,9 +22,9 @@
 
 <div class="dashboard">
     <a href="register.jsp" class="tab tab-users">Add New User</a>
-    <a href="customer-list.jsp" class="tab tab-customers">Manage Customers</a>
-    <a href="item-list.jsp" class="tab tab-items">Manage Items</a>
-    <a href="category-list.jsp" class="tab tab-categories">Item Categories</a>
+    <a href="customer-list-cash.jsp" class="tab tab-customers">Manage Customers</a>
+    <a href="item-" class="tab tab-items">View  Items</a>
+    <a href="category-" class="tab tab-categories">view Categories</a>
     <a href="bills" class="bills-list.jsp">Manage Bills</a>
     <a href="bill-item" class="tab tab-settings">Manage Bill Items</a>
 

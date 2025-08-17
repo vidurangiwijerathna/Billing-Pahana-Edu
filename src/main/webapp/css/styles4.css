@@ -1,7 +1,7 @@
 /* ===== Reset & Base ===== */
 html, body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url('/css/images/indeximg.jpg') no-repeat center center fixed;
+    background: url('/css/images/admin.jpg') no-repeat center center fixed;
     background-size: cover;
     margin: 0;
     padding: 0;

@@ -1,6 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #d4e4ff, #ffffff);
+    background: url("images/admin.jpg") no-repeat center center fixed;
+    background-size: cover;
     margin: 0;
     padding: 0;
 }

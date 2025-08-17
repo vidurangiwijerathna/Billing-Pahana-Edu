@@ -1,4 +1,10 @@
-/* style2.css - Styles for Item Category list and form */
+body {
+    font-family: Arial, sans-serif;
+    background: url("images/customer.jpg") no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+}
 /* Navbar */
 .navbar {
     background-color: #003360;

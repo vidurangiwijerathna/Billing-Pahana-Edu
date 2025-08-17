@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Add Customer</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles7.css">
 </head>
 <body>
 
@@ -42,8 +42,6 @@
     <a href="customer-list.jsp" class="tab"> Customer List </a>
 </form>
 
-<footer>
-    &copy; 2025 Pahana Edu. All rights reserved.
-</footer>
+
 </body>
 </html>

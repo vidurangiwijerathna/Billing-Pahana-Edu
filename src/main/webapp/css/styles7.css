@@ -1,0 +1,134 @@
+/* styles1.css */
+
+/* ===== Reset & Base ===== */
+html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url("images/indeximg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* ===== Navigation Bar ===== */
+nav {
+    background-color: rgba(0, 43, 91, 0.95); /* Dark blue with slight transparency */
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 12px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+nav a:hover {
+    background-color: #0066cc;
+    transform: translateY(-2px);
+}
+
+/* ===== Container for Form ===== */
+h2 {
+    text-align: center;
+    margin-top: 100px; /* space for nav */
+    color: #003366;
+    font-size: 28px;
+}
+
+form {
+    max-width: 450px;
+    margin: 30px auto;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* ===== Form Inputs ===== */
+form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="email"],
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border: 1.8px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+form input:focus,
+form textarea:focus {
+    border-color: #004d99;
+    outline: none;
+}
+
+/* ===== Submit Button ===== */
+form input[type="submit"] {
+    width: 100%;
+    background-color: #004d99;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+    background-color: #003366;
+}
+
+/* ===== Customer List Link ===== */
+a.tab {
+    display: inline-block;
+    background-color: #003366;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+a.tab:hover {
+    background-color: #0066cc;
+}
+
+/* ===== Messages ===== */
+.success-message {
+    color: #007a00;
+    text-align: center;
+    margin-top: 80px;
+    font-weight: bold;
+}
+
+.error-message {
+    color: #cc0000;
+    text-align: center;
+    margin-top: 80px;
+    font-weight: bold;
+}
+
