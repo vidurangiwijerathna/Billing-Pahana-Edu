@@ -22,47 +22,13 @@
     <br>
     <br>
     <a href="item-form.jsp" class="btn btn-add">Add New Item</a>
+    <a href="item-view.jsp" class="btn btn-add">View Items</a>
     <br>
     <br>
     <br>
 
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Author</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Category</th>
-
-        </tr>
-        </thead>
-        <tbody>
-        <%
-            List<ItemDTO> items = (List<ItemDTO>) request.getAttribute("items");
-            if (items != null) {
-                for (ItemDTO item : items) {
-        %>
-        <tr>
-            <td><%= item.getId() %></td>
-            <td><%= item.getName() %></td>
-            <td><%= item.getAuthor() %></td>
-            <td>$<%= item.getPrice() %></td>
-            <td><%= item.getStock() %></td>
-            <td><%= item.getCategoryName() %></td>
-            <td>
-                <a href="items?action=edit&id=<%= item.getId() %>" class="btn btn-edit"> Edit</a>
-                <a href="items?action=delete&id=<%= item.getId() %>" class="btn btn-delete"
-                   onclick="return confirm('Are you sure?')"> Delete</a>
-            </td>
-        </tr>
-        <%
-                }
-            }
-        %>
-        </tbody>
-    </table>
+    <!-- Back Button -->
+    <button onclick="history.back()" class="back-btn">Back</button>
 </div>
 
 <div class="footer">

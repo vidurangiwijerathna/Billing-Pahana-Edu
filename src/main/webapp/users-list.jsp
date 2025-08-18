@@ -43,7 +43,8 @@
         </c:if>
         </tbody>
     </table>
-    <a href="admin-db.jsp">Admin Page</a>
+    <!-- Back Button -->
+    <button onclick="history.back()" class="back-btn">Back</button>
 </div>
 <br>
 <br>

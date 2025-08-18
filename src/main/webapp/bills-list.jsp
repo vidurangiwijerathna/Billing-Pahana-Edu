@@ -1,22 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.book.dto.BillDTO" %>
-<!DOCTYPE html>
 <html>
 <head>
     <title>Bills</title>
     <link rel="stylesheet" href="css/styles5.css">
 </head>
 <body>
-<h2>All Bills</h2>
-<a href="bills-create.jsp">Create New Bill</a>
-<table>
-    <thead>
+<h2>Bills</h2>
+<a href="bills?action=create">Create New Bill</a>
+<br/><br/>
+<table border="1" cellpadding="8" cellspacing="0">
     <tr>
-        <th>ID</th><th>Customer ID</th><th>Created At</th><th>Total Amount</th><th>Created By</th><th>Action</th>
+        <th>ID</th>
+        <th>Customer ID</th>
+        <th>Total</th>
+        <th>Created At</th>
+        <th>Actions</th>
     </tr>
-    </thead>
-    <tbody>
     <%
         List<BillDTO> bills = (List<BillDTO>) request.getAttribute("bills");
         if (bills != null) {
@@ -25,16 +26,16 @@
     <tr>
         <td><%= b.getId() %></td>
         <td><%= b.getCustomerId() %></td>
-        <td><%= b.getCreatedAt() %></td>
         <td><%= b.getTotalAmount() %></td>
-        <td><%= b.getCreatedBy() %></td>
-        <td><a href="bill-view.jsp">View</a></td>
+        <td><%= (b.getCreatedAt() != null) ? new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(b.getCreatedAt()) : "" %></td>
+        <td><a href="bills?action=details&id=<%= b.getId() %>">View</a></td>
     </tr>
     <%      }
     } else { %>
-    <tr><td colspan="6">No bills found.</td></tr>
+    <tr><td colspan="5">No bills.</td></tr>
     <% } %>
-    </tbody>
 </table>
+<!-- Back Button -->
+<button onclick="history.back()" class="back-btn">Back</button>
 </body>
 </html>

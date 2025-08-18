@@ -35,6 +35,9 @@
 
     <input type="submit" value="<%= editing ? "Update Category" : "Add Category" %>">
     <a href="item-list.jsp" class="tab"> Item Page</a>
+    <!-- Back Button -->
+    <button onclick="history.back()" class="back-btn">Back</button>
+
 </form>
 <footer>
     &copy; 2025 Pahana Edu. All rights reserved.

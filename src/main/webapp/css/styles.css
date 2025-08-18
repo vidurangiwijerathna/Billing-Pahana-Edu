@@ -114,6 +114,22 @@ form input[type="submit"]:hover {
     margin-bottom: 15px;
     font-weight: 600;
 }
+.back-btn {
+    background-color:  #003360;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 10px 0;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background-color:  #003360;
+}
+
 
 /* ===== Footer ===== */
 footer {

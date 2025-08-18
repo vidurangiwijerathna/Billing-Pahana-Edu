@@ -1,40 +1,52 @@
+// com/book/service/BillService.java
 package com.book.service;
 
 import com.book.dao.BillDAO;
+import com.book.dao.CustomerDAO;
+import com.book.dao.ItemDAO;
 import com.book.dto.BillDTO;
-import com.book.mapper.BillMapper;
-import com.book.model.Bill;
+import com.book.dto.BillItemDTO;
+import com.book.model.Customer;
+import com.book.model.Item;
 
+import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BillService {
 
     private final BillDAO billDAO = new BillDAO();
+    private final ItemDAO itemDAO = new ItemDAO();
+    private final CustomerDAO customerDAO = new CustomerDAO();
 
-    // Get all bills as DTOs
-    public List<BillDTO> getAllBills() {
-        List<Bill> bills = billDAO.getAll();
-        return bills.stream()
-                .map(BillMapper::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    // Get single bill by ID as DTO
-    public BillDTO getBillById(Integer id) {
-        Bill bill = billDAO.findById(id);
-        return BillMapper.toDTO(bill);
-    }
-
-    // Add a new bill from DTO
-    public boolean addBill(BillDTO billDTO) {
-        try {
-            Bill bill = BillMapper.toEntity(billDTO);
-            billDAO.save(bill);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    // Create bill: fetch unit prices from DB to prevent tampering; compute total; persist via DAO
+    public boolean addBill(BillDTO dto) {
+        double total = 0.0;
+        if (dto.getBillItems() != null) {
+            for (BillItemDTO it : dto.getBillItems()) {
+                double price = itemDAO.getUnitPrice(it.getItemId());
+                it.setPrice(price);
+                total += price * it.getQuantity();
+            }
         }
+        dto.setTotalAmount(total);
+        Integer id = billDAO.insert(dto);
+        return id != null && id > 0;
+    }
+
+    public List<BillDTO> getAllBills() {
+        return billDAO.findAll();
+    }
+
+    public BillDTO getBillById(Integer id) {
+        return billDAO.findById(id);
+    }
+
+    public List<Customer> getAllCustomers() {
+        return customerDAO.findAll();
+    }
+
+    public List<Item> getAllItems() {
+        // you already have ItemDAO.getAll()
+        return itemDAO.getAll();
     }
 }

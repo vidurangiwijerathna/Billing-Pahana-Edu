@@ -35,11 +35,6 @@
         <li>Generated bills will automatically calculate total amounts.</li>
     </ul>
 
-    <h3> Settings</h3>
-    <ul>
-        <li>Admins can configure system preferences under <b>Settings</b>.</li>
-    </ul>
-
     <h3> Logout</h3>
     <ul>
         <li>Always use the <b>Logout</b> button to safely end your session.</li>
@@ -49,5 +44,7 @@
         <a href="index.jsp"> Back to Home</a>
     </div>
 </div>
+<!-- Back Button -->
+<button onclick="history.back()" class="back-btn">Back</button>
 </body>
 </html>

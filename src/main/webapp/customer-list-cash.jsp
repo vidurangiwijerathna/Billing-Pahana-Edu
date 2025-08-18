@@ -17,9 +17,10 @@
     <a href="customer-form.jsp" class="tab"> Add New Customer</a>
     <a href="view-customer.jsp" class="tab"> View Customers Info</a>
     <a href="update-customer.jsp" class="tab"> Update Customer Info</a>
-    <a href="user-db.jsp" class="tab"> Cashier Page</a>
-</div>
 
+</div>
+<!-- Back Button -->
+<button onclick="history.back()" class="back-btn">Back</button>
 <footer>
     &copy; 2025 Pahana Edu. All rights reserved.
 </footer>

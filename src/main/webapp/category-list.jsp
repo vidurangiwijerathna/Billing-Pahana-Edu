@@ -20,36 +20,13 @@
 </nav>
 <h2>Item Categories</h2>
 <a href="category-form.jsp">Add New Category</a>
-
-
-<table border="1" cellpadding="8" cellspacing="0" style="width:80%; margin:20px auto;">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Category Name</th>
-
-    </tr>
-    </thead>
-    <tbody>
-    <%
-        List<ItemCategoryDTO> categories = (List<ItemCategoryDTO>) request.getAttribute("categories");
-        if (categories != null) {
-            for (ItemCategoryDTO cat : categories) {
-    %>
-    <tr>
-        <td><%= cat.getId() %></td>
-        <td><%= cat.getCategoryName() %></td>
-        <td>
-            <a href="categories?action=edit&id=<%= cat.getId() %>">Edit</a> |
-            <a href="categories?action=delete&id=<%= cat.getId() %>" onclick="return confirm('Are you sure?')">Delete</a>
-        </td>
-    </tr>
-    <%
-            }
-        }
-    %>
-    </tbody>
-</table>
+<a href="category-view.jsp">View Category</a>
+<br>
+<br>
+<!-- Back Button -->
+<button onclick="history.back()" class="back-btn">Back</button>
+<br>
+<br>
 <footer>
     &copy; 2025 Pahana Edu. All rights reserved.
 </footer>

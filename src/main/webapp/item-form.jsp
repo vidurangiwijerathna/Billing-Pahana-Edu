@@ -51,7 +51,11 @@
 
     <input type="submit" value="Add Book">
 </form>
-
+<br>
+<br>
+<a href="item-view.jsp" class="btn btn-add">View Items</a>
+<!-- Back Button -->
+<button onclick="history.back()" class="back-btn">Back</button>
 <div class="footer">
     &copy; 2025 Book Management System. All rights reserved.
 </div>

@@ -16,10 +16,10 @@
 <div class="tabs">
     <a href="customer-form.jsp" class="tab"> Add New Customer</a>
     <a href="view-customer.jsp" class="tab"> View Customers Info</a>
-    <a href="update-customer.jsp" class="tab"> Update Customer Info</a>
     <a href="admin-db.jsp" class="tab"> Admin Page</a>
 </div>
-
+<!-- Back Button -->
+<button onclick="history.back()" class="back-btn">Back</button>
 <footer>
     &copy; 2025 Pahana Edu. All rights reserved.
 </footer>

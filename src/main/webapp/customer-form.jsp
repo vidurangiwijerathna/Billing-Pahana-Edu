@@ -42,6 +42,7 @@
     <a href="customer-list.jsp" class="tab"> Customer List </a>
 </form>
 
-
+<!-- Back Button -->
+<button onclick="history.back()" class="back-btn">Back</button>
 </body>
 </html>

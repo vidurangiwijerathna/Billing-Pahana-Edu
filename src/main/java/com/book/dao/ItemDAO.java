@@ -60,4 +60,19 @@ public class ItemDAO {
             em.close();
         }
     }
+
+    public double getUnitPrice(long itemId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Double price = em.createQuery(
+                            "SELECT i.price FROM Item i WHERE i.id = :id", Double.class)
+                    .setParameter("id", itemId)
+                    .getSingleResult();
+            return price != null ? price : 0.0;
+        } catch (NoResultException e) {
+            throw new RuntimeException("Item not found: " + itemId, e);
+        } finally {
+            em.close();
+        }
+    }
 }

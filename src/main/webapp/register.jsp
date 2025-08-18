@@ -48,6 +48,8 @@
 
   <p style="text-align:center;">Already have an account? <a href="login.jsp">Login here</a></p>
 </div>
+<!-- Back Button -->
+<button onclick="history.back()" class="back-btn">Back</button>
 
 <footer>
   &copy; 2025 Pahana Edu. All rights reserved.

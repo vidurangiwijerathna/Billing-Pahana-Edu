@@ -87,6 +87,22 @@ nav a:hover {
 .tab-bill { background: linear-gradient(135deg, #654ea3, #eaafc8); }
 .tab-bill-item { background: linear-gradient(135deg, #f7971e, #ffd200); }
 
+.back-btn {
+    background-color:  #003360;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 10px 0;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background-color:  #003360;
+}
+
 
 /* ===== Footer ===== */
 footer {
