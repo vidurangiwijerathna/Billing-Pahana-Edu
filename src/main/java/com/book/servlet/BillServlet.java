@@ -41,6 +41,7 @@ public class BillServlet extends HttpServlet {
                 request.setAttribute("customers", customers);
                 request.setAttribute("items", items);
                 request.getRequestDispatcher("bill-create.jsp").forward(request, response);
+                request.getRequestDispatcher("user-db.jsp").forward(request, response);
                 break;
 
             case "details":

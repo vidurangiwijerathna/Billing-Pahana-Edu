@@ -23,11 +23,8 @@ public class CustomerService {
         customerDAO.save(c);
     }
 
-    public List<CustomerDTO> getAllCustomers() {
-        return customerDAO.findAll()
-                .stream()
-                .map(CustomerMapper::toDTO)
-                .collect(Collectors.toList());
+    public List<Customer> getAllCustomers() {
+        return customerDAO.findAll();
     }
 
     public List<Customer> viewAllCustomers() {

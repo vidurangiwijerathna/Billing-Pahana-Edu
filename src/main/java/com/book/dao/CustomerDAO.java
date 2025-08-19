@@ -27,9 +27,12 @@ public class CustomerDAO {
 
     public List<Customer> findAll() {
         EntityManager em = emf.createEntityManager();
-
-            return em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList();
-
+        try {
+            return em.createQuery("SELECT c FROM Customer c ORDER BY c.id", Customer.class)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
     }
 
 
