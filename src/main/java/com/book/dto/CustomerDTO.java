@@ -12,7 +12,16 @@ public class CustomerDTO {
     private String accountNumber;
     private LocalDateTime createdAt; // NEW
 
+
+
     public CustomerDTO(Long id, String name, String email, String phone, String address, String accountNumber, LocalDateTime createdAt) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.accountNumber = accountNumber;
+        this.createdAt = createdAt;
     }
 
     // Getters & Setters

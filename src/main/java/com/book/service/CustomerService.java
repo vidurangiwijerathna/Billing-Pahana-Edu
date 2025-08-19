@@ -23,8 +23,23 @@ public class CustomerService {
         customerDAO.save(c);
     }
 
+    public CustomerDTO getCustomerByName(String name) {
+        CustomerDAO dao = new CustomerDAO();
+        return dao.findByName(name);
+    }
+
+    public void updateCustomer(CustomerDTO dto) {
+        Customer customer = CustomerMapper.toEntity(dto);
+        customerDAO.update(customer);
+    }
+
     public List<Customer> getAllCustomers() {
         return customerDAO.findAll();
+    }
+
+    public CustomerDTO getCustomerById(int id) {
+        Customer customer = customerDAO.findById(id);
+        return CustomerMapper.toDTO(customer);
     }
 
     public List<Customer> viewAllCustomers() {

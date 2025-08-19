@@ -1,5 +1,7 @@
 package com.book.dao;
 
+import com.book.dto.CustomerDTO;
+import com.book.mapper.CustomerMapper;
 import com.book.model.Customer;
 import com.book.model.User;
 import jakarta.persistence.*;
@@ -9,6 +11,7 @@ import java.util.List;
 public class CustomerDAO {
 
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPU");
+    private CustomerMapper mapper = new CustomerMapper();
 
     public void save(Customer customer) {
         EntityManager em = emf.createEntityManager();
@@ -46,6 +49,11 @@ public class CustomerDAO {
         }
     }
 
+    public Customer findById(int id) {
+        EntityManager em = emf.createEntityManager();
+        return em.find(Customer.class, id);
+    }
+
     public void update(Customer customer) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -75,5 +83,26 @@ public class CustomerDAO {
         } finally {
             em.close();
         }
+    }
+
+    public CustomerDTO findByName(String name) {
+        EntityManager em = emf.createEntityManager();
+        CustomerDTO customer = null;
+
+        try {
+            TypedQuery<Customer> query = em.createQuery(
+                    "SELECT c FROM Customer c WHERE c.name = :name", Customer.class);
+            query.setParameter("name", name);
+            Customer result = query.getSingleResult();
+
+            if (result != null) {
+                customer = mapper.toDTO(result);
+            }
+        } catch (NoResultException e) {
+            // no customer found, return null
+        } finally {
+            em.close();
+        }
+        return customer;
     }
 }
