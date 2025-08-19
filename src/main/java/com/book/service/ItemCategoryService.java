@@ -22,7 +22,7 @@ public class ItemCategoryService {
 
 
     public List<ItemCategory> getAllCategories() {
-        return dao.getAll();
+        return dao.findAll();
     }
 
     public ItemCategoryDTO getById(Long id) {

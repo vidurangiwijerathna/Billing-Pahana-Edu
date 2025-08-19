@@ -1,5 +1,7 @@
 package com.book.dto;
 
+import com.book.model.Item;
+
 public class ItemDTO {
     private Long id;
     private String name;
@@ -8,6 +10,17 @@ public class ItemDTO {
     private int stock;
     private Long categoryId;
     private String categoryName;
+
+    public ItemDTO() {}
+
+    public ItemDTO(Item item) {
+        this.id = item.getId();
+        this.name = item.getName();
+        this.author = item.getAuthor();
+        this.price = item.getPrice();
+        this.stock = item.getStock();
+        this.categoryId = item.getCategory().getId();
+    }
 
     // Getters & Setters
     public Long getId() { return id; }

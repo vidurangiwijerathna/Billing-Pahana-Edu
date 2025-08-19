@@ -27,8 +27,10 @@ public class ItemService {
         }
     }
 
-    public List<ItemDTO> getAllItems() {
-        return itemDAO.getAll().stream().map(ItemMapper::toDTO).collect(Collectors.toList());
+
+
+    public List<Item> getAllItems() {
+        return itemDAO.findAll();
     }
 
     public ItemDTO getItemById(Long id) {

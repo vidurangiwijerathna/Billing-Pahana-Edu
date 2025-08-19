@@ -75,4 +75,9 @@ public class ItemDAO {
             em.close();
         }
     }
+
+    public List<Item> findAll() {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT i FROM Item i", Item.class).getResultList();
+    }
 }

@@ -71,4 +71,9 @@ public class ItemCategoryDAO {
             em.close();
         }
     }
+
+    public List<ItemCategory> findAll() {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT c FROM ItemCategory c", ItemCategory.class).getResultList();
+    }
 }

@@ -15,7 +15,6 @@
         <th>ID</th>
         <th>Customer ID</th>
         <th>Total</th>
-        <th>Created At</th>
         <th>Actions</th>
     </tr>
     <%
@@ -27,7 +26,6 @@
         <td><%= b.getId() %></td>
         <td><%= b.getCustomerId() %></td>
         <td><%= b.getTotalAmount() %></td>
-        <td><%= (b.getCreatedAt() != null) ? new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(b.getCreatedAt()) : "" %></td>
         <td><a href="bills?action=details&id=<%= b.getId() %>">View</a></td>
     </tr>
     <%      }
